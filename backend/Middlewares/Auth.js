@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
+
 const ensureAuthenticated = (req, res, next) => {
   const auth = req.headers["authorization"];
+
+  // console.log("---- auth header ----", req.headers["authorization"]); 
+
   if (!auth) {
     return res
       .status(403)
@@ -10,6 +14,7 @@ const ensureAuthenticated = (req, res, next) => {
     const decoded = jwt.verify(auth, process.env.JWT_SECRET);
     req.user = decoded;
     next();
+
   } catch (err) {
     return res
       .status(403)
@@ -18,3 +23,4 @@ const ensureAuthenticated = (req, res, next) => {
 };
 
 module.exports = ensureAuthenticated;
+

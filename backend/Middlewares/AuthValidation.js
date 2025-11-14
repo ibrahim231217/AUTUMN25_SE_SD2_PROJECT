@@ -23,6 +23,8 @@ const loginValidation = (req, res, next) => {
     password: joi.string().min(4).max(30).required(),
   });
 
+
+  
   const { error } = schema.validate(req.body);
   if (error) {
     return res
