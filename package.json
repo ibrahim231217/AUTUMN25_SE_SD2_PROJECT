@@ -1,0 +1,17 @@
+{
+  "name": "hospital-management",
+  "version": "1.0.0",
+  "description": "Hospital Management System - MERN Stack",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "start": "concurrently \"npm start -w backend\" \"npm run dev -w frontend\""
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
