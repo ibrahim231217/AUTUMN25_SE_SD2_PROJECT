@@ -63,6 +63,7 @@ const register = async (req, res) => {
     if (role === "doctor") {
       userData.speciality = speciality;
       userData.experience = experience || 0;
+      userData.isApproved = false; // Doctors need admin approval
     }
 
     // Create user
@@ -81,6 +82,7 @@ const register = async (req, res) => {
           role: user.role,
           speciality: user.speciality,
           experience: user.experience,
+          isApproved: user.isApproved,
         },
         token,
       },
@@ -98,23 +100,25 @@ const register = async (req, res) => {
 // @access  Public
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, username, password } = req.body;
 
     // Validation
-    if (!email || !password) {
+    if (!password || (!email && !username)) {
       return res.status(400).json({
         success: false,
-        message: "Please provide email and password",
+        message: "Please provide email/username and password",
       });
     }
 
-    // Find user
-    const user = await User.findOne({ email });
+    // Find user by email or username
+    const user = await User.findOne({
+      $or: [{ email }, { username }],
+    });
 
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message: "Invalid email/username or password",
       });
     }
 
@@ -124,7 +128,15 @@ const login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message: "Invalid email/username or password",
+      });
+    }
+
+    // Check if doctor is approved
+    if (user.role === "doctor" && !user.isApproved) {
+      return res.status(403).json({
+        success: false,
+        message: "Doctor account is pending admin approval. Please wait for approval.",
       });
     }
 
@@ -143,6 +155,7 @@ const login = async (req, res) => {
           experience: user.experience,
           description: user.description,
           profileImage: user.profileImage,
+          isApproved: user.isApproved,
         },
         token,
       },

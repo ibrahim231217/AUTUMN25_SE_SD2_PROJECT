@@ -27,7 +27,7 @@ const getDoctors = async (req, res) => {
   try {
     const { category } = req.query;
 
-    let filter = { role: "doctor" };
+    let filter = { role: "doctor", isApproved: true };
 
     if (category && category !== "All") {
       filter.speciality = category;
@@ -72,6 +72,14 @@ const bookAppointment = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Doctor not found",
+      });
+    }
+
+    // Check if doctor is approved
+    if (!doctor.isApproved) {
+      return res.status(403).json({
+        success: false,
+        message: "This doctor is not approved yet",
       });
     }
 

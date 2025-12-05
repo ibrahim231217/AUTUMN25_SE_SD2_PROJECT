@@ -53,6 +53,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    isApproved: {
+      type: Boolean,
+      default: function() {
+        // Admins and patients are always approved
+        // Only doctors need approval
+        return this.role !== "doctor";
+      },
+      required: true,
+    },
   },
   {
     timestamps: true,

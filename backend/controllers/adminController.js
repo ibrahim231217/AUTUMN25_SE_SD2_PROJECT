@@ -1,6 +1,322 @@
 const User = require("../models/User");
 const Booking = require("../models/Booking");
 
+// @desc    Get all users
+// @route   GET /api/admin/users
+// @access  Admin only
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    const totalPatients = await User.countDocuments({ role: "patient" });
+    const totalDoctors = await User.countDocuments({ role: "doctor" });
+    const pendingDoctors = await User.countDocuments({
+      role: "doctor",
+      isApproved: false,
+    });
+    const approvedDoctors = await User.countDocuments({
+      role: "doctor",
+      isApproved: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      data: users,
+      stats: {
+        totalPatients,
+        totalDoctors,
+        pendingDoctors,
+        approvedDoctors,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Get all approved doctors
+// @route   GET /api/admin/doctors
+// @access  Admin only
+const getAllDoctors = async (req, res) => {
+  try {
+    const doctors = await User.find({
+      role: "doctor",
+      isApproved: true,
+    }).select("-password");
+
+    res.status(200).json({
+      success: true,
+      message: "Approved doctors fetched successfully",
+      data: doctors,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Get all pending doctors (awaiting approval)
+// @route   GET /api/admin/pending-doctors
+// @access  Admin only
+const getPendingDoctors = async (req, res) => {
+  try {
+    const pendingDoctors = await User.find({
+      role: "doctor",
+      isApproved: false,
+    }).select("-password");
+
+    res.status(200).json({
+      success: true,
+      message: "Pending doctors fetched successfully",
+      data: pendingDoctors,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Approve a doctor
+// @route   PUT /api/admin/approve-doctor/:id
+// @access  Admin only
+const approveDoctor = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find and validate doctor exists
+    const doctor = await User.findById(id);
+
+    if (!doctor) {
+      return res.status(404).json({
+        success: false,
+        message: "Doctor not found",
+      });
+    }
+
+    // Check if user is actually a doctor
+    if (doctor.role !== "doctor") {
+      return res.status(400).json({
+        success: false,
+        message: "User is not a doctor",
+      });
+    }
+
+    // Check if already approved
+    if (doctor.isApproved) {
+      return res.status(400).json({
+        success: false,
+        message: "Doctor is already approved",
+      });
+    }
+
+    // Approve the doctor
+    doctor.isApproved = true;
+    await doctor.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Doctor approved successfully",
+      data: doctor,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Reject a doctor (delete pending doctor)
+// @route   DELETE /api/admin/reject-doctor/:id
+// @access  Admin only
+const rejectDoctor = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find and validate doctor exists
+    const doctor = await User.findById(id);
+
+    if (!doctor) {
+      return res.status(404).json({
+        success: false,
+        message: "Doctor not found",
+      });
+    }
+
+    // Check if user is actually a doctor
+    if (doctor.role !== "doctor") {
+      return res.status(400).json({
+        success: false,
+        message: "User is not a doctor",
+      });
+    }
+
+    // Can only reject pending doctors
+    if (doctor.isApproved) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot reject an already approved doctor",
+      });
+    }
+
+    // Delete the doctor
+    await User.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Doctor application rejected and deleted",
+      data: { deletedDoctorId: id },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Get all patients
+// @route   GET /api/admin/patients
+// @access  Admin only
+const getAllPatients = async (req, res) => {
+  try {
+    const patients = await User.find({
+      role: "patient",
+    }).select("-password");
+
+    res.status(200).json({
+      success: true,
+      message: "Patients fetched successfully",
+      data: patients,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Delete a doctor
+// @route   DELETE /api/admin/doctor/:id
+// @access  Admin only
+const deleteDoctorAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find and validate doctor exists
+    const doctor = await User.findById(id);
+
+    if (!doctor) {
+      return res.status(404).json({
+        success: false,
+        message: "Doctor not found",
+      });
+    }
+
+    // Check if user is actually a doctor
+    if (doctor.role !== "doctor") {
+      return res.status(400).json({
+        success: false,
+        message: "User is not a doctor",
+      });
+    }
+
+    // Delete all bookings for this doctor
+    await Booking.deleteMany({ doctorId: id });
+
+    // Delete the doctor
+    await User.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Doctor and associated bookings deleted successfully",
+      data: { deletedDoctorId: id },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Get admin dashboard statistics
+// @route   GET /api/admin/statistics
+// @access  Admin only
+const getDashboardStats = async (req, res) => {
+  try {
+    const totalPatients = await User.countDocuments({ role: "patient" });
+    const totalDoctors = await User.countDocuments({
+      role: "doctor",
+      isApproved: true,
+    });
+    const pendingDoctors = await User.countDocuments({
+      role: "doctor",
+      isApproved: false,
+    });
+    const totalAppointments = await Booking.countDocuments();
+
+    // Get appointments for today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const appointmentsToday = await Booking.countDocuments({
+      date: { $gte: today, $lt: tomorrow },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Dashboard statistics fetched successfully",
+      data: {
+        totalPatients,
+        totalDoctors,
+        pendingDoctors,
+        totalAppointments,
+        appointmentsToday,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Get all bookings
+// @route   GET /api/admin/bookings
+// @access  Admin only
+const getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find()
+      .populate("patientId", "username email")
+      .populate("doctorId", "username email speciality")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: bookings.length,
+      data: bookings,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Legacy: Add new admin
 // @desc    Add new admin
 // @route   POST /api/admin/add-admin
 // @access  Private (Admin)
@@ -54,6 +370,7 @@ const addAdmin = async (req, res) => {
   }
 };
 
+// Legacy: Add new doctor
 // @desc    Add new doctor
 // @route   POST /api/admin/add-doctor
 // @access  Private (Admin)
@@ -139,8 +456,9 @@ const addDoctor = async (req, res) => {
   }
 };
 
+// Legacy: Get doctors
 // @desc    Get all doctors
-// @route   GET /api/admin/doctors
+// @route   GET /api/admin/doctors (legacy endpoint - returns all doctors)
 // @access  Private (Admin)
 const getDoctors = async (req, res) => {
   try {
@@ -161,29 +479,7 @@ const getDoctors = async (req, res) => {
   }
 };
 
-// @desc    Get all bookings
-// @route   GET /api/admin/bookings
-// @access  Private (Admin)
-const getAllBookings = async (req, res) => {
-  try {
-    const bookings = await Booking.find()
-      .populate("patientId", "username email")
-      .populate("doctorId", "username email speciality")
-      .sort({ createdAt: -1 });
-
-    res.status(200).json({
-      success: true,
-      count: bookings.length,
-      data: bookings,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
+// Legacy: Update doctor
 // @desc    Update doctor details
 // @route   PATCH /api/admin/update-doctor/:id
 // @access  Private (Admin)
@@ -267,45 +563,17 @@ const updateDoctor = async (req, res) => {
   }
 };
 
-// @desc    Delete doctor
-// @route   DELETE /api/admin/delete-doctor/:id
-// @access  Private (Admin)
-const deleteDoctor = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const doctor = await User.findOne({ _id: id, role: "doctor" });
-
-    if (!doctor) {
-      return res.status(404).json({
-        success: false,
-        message: "Doctor not found",
-      });
-    }
-
-    // Delete all bookings associated with this doctor
-    await Booking.deleteMany({ doctorId: id });
-
-    // Delete doctor
-    await User.findByIdAndDelete(id);
-
-    res.status(200).json({
-      success: true,
-      message: "Doctor deleted successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
 module.exports = {
-  addAdmin,
-  addDoctor,
-  getDoctors,
+  getAllUsers,
+  getAllDoctors,
+  getPendingDoctors,
+  approveDoctor,
+  rejectDoctor,
+  getAllPatients,
+  deleteDoctorAccount,
+  getDashboardStats,
   getAllBookings,
+  addAdmin,
+  getDoctors,
   updateDoctor,
-  deleteDoctor,
 };
