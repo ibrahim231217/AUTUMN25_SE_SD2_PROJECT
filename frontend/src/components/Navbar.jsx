@@ -30,7 +30,7 @@ const Navbar = ({ user, onLogout }) => {
             to={getDashboardLink()}
             className="text-xl font-bold text-slate-700 flex items-center gap-2"
           >
-            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-sm font-bold">
+            <div className="w-8 h-8 bg-purple-300  rounded flex items-center justify-center text-white text-sm font-bold">
               ⚕️
             </div>
             MediCare
