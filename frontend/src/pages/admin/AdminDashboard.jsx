@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+  faUsers,
+  faUserDoctor,
+  faClock,
+  faClipboardList,
+  faCalendarDay,
+  faCheckCircle,
+  faStethoscope
+} from '@fortawesome/free-solid-svg-icons';
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import api from "../../utils/api";
@@ -61,40 +71,46 @@ const AdminDashboard = ({ user, onLogout }) => {
     {
       title: "Total Patients",
       value: stats.totalPatients,
-      icon: "👨‍🦱",
-      color: "bg-blue-50 border-blue-200",
+      icon: faUsers,
+      gradient: "from-blue-500 to-blue-600",
+      bgLight: "bg-blue-50",
       link: "/admin/manage-patients",
     },
     {
       title: "Total Doctors",
       value: stats.totalDoctors,
-      icon: "👨‍⚕️",
-      color: "bg-green-50 border-green-200",
+      icon: faStethoscope,
+      gradient: "from-green-500 to-green-600",
+      bgLight: "bg-green-50",
       link: "/admin/manage-doctors",
     },
     {
-      title: "Pending Doctor Approvals",
+      title: "Pending Approvals",
       value: stats.pendingDoctors,
-      icon: "⏳",
-      color: "bg-yellow-50 border-yellow-200",
+      icon: faClock,
+      gradient: "from-amber-500 to-amber-600",
+      bgLight: "bg-amber-50",
       link: "/admin/doctor-approvals",
       highlight: stats.pendingDoctors > 0,
     },
     {
       title: "Total Appointments",
       value: stats.totalAppointments,
-      icon: "📅",
-      color: "bg-purple-50 border-purple-200",
+      icon: faClipboardList,
+      gradient: "from-purple-500 to-purple-600",
+      bgLight: "bg-purple-50",
       link: "/admin/all-bookings",
     },
     {
-      title: "Appointments Today",
+      title: "Today's Appointments",
       value: stats.appointmentsToday,
-      icon: "📌",
-      color: "bg-orange-50 border-orange-200",
+      icon: faCalendarDay,
+      gradient: "from-pink-500 to-pink-600",
+      bgLight: "bg-pink-50",
       link: "/admin/all-bookings",
     },
   ];
+
 
   return (
     <div className="page-container">
@@ -103,124 +119,79 @@ const AdminDashboard = ({ user, onLogout }) => {
       <div className="flex">
         <Sidebar role="admin" />
 
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ml-64">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
-            <div className="mb-10">
-              <h1 className="section-header mb-2">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Admin Dashboard
               </h1>
-              <p className="section-subtitle">
+              <p className="text-gray-600">
                 Manage doctors, patients, and system operations
               </p>
             </div>
 
             {/* Stats Grid */}
             {loading ? (
-              <div className="text-center py-12">
-                <p className="text-gray-600">Loading statistics...</p>
+              <div className="card text-center py-12">
+                <div className="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                <p className="mt-4 text-gray-600">Loading statistics...</p>
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
                   {statCards.map((stat, idx) => (
                     <Link key={idx} to={stat.link}>
-                      <div
-                        className={`card-elevated rounded-xl p-6 cursor-pointer ${
-                          stat.highlight ? "ring-2 ring-action-500" : ""
-                        }`}
-                      >
-                        <div className="flex items-start justify-between">
+                      <div className={`relative overflow-hidden rounded-2xl bg-white border-2 ${stat.highlight ? 'border-amber-400 shadow-lg' : 'border-gray-200'} transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer`}>
+                        {/* Gradient Background */}
+                        <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${stat.gradient} opacity-10 rounded-bl-full`}></div>
+                        
+                        {/* Content */}
+                        <div className="relative p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center shadow-md`}>
+                              <FontAwesomeIcon icon={stat.icon} className="text-2xl text-white" />
+                            </div>
+                            {stat.highlight && (
+                              <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                                Action Required
+                              </span>
+                            )}
+                          </div>
+                          
                           <div>
-                            <p className="text-sm font-medium text-gray-600">
+                            <p className="text-sm font-medium text-gray-600 mb-1">
                               {stat.title}
                             </p>
-                            <p className="text-3xl font-bold text-primary-600 mt-2">
+                            <p className="text-3xl font-bold text-gray-900">
                               {stat.value}
                             </p>
                           </div>
-                          <div className="text-3xl">{stat.icon}</div>
                         </div>
-                        {stat.highlight && (
-                          <p className="text-xs text-action-500 mt-2 font-semibold">
-                            Action required
-                          </p>
-                        )}
                       </div>
                     </Link>
                   ))}
                 </div>
 
-                {/* Quick Actions */}
-                <div className="card bg-white rounded-xl p-8 mb-12">
-                  <h2 className="text-2xl font-bold text-primary-600 mb-6">
-                    Quick Actions
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <Link
-                      to="/admin/manage-doctors"
-                      className="card group rounded-xl text-center"
-                    >
-                      <div className="text-4xl mb-3 group-hover:scale-125 transition-transform">👨‍⚕️</div>
-                      <h3 className="font-semibold text-primary-600 mb-1">
-                        Manage Doctors
-                      </h3>
-                      <p className="text-xs text-gray-600">
-                        View and manage doctors
-                      </p>
-                    </Link>
 
-                    <Link
-                      to="/admin/doctor-approvals"
-                      className="card group rounded-xl text-center"
-                    >
-                      <div className="text-4xl mb-3 group-hover:scale-125 transition-transform">✅</div>
-                      <h3 className="font-semibold text-primary-600 mb-1">
-                        Approve Doctors
+                {/* System Information */}
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-blue-200 p-8">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-200 opacity-20 rounded-bl-full"></div>
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-xl">
+                        ℹ️
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900">
+                        System Information
                       </h3>
-                      <p className="text-xs text-gray-600">
-                        Review pending applications
-                      </p>
-                    </Link>
-
-                    <Link
-                      to="/admin/manage-patients"
-                      className="card group rounded-xl text-center"
-                    >
-                      <div className="text-4xl mb-3 group-hover:scale-125 transition-transform">👨‍🦱</div>
-                      <h3 className="font-semibold text-primary-600 mb-1">
-                        Manage Patients
-                      </h3>
-                      <p className="text-xs text-gray-600">
-                        View patient list
-                      </p>
-                    </Link>
-
-                    <Link
-                      to="/admin/all-bookings"
-                      className="card p-4 border-2 border-purple-200 rounded-xl hover:bg-purple-50 transition text-center group"
-                    >
-                      <div className="text-3xl mb-2 group-hover:scale-110 transition">📅</div>
-                      <h3 className="font-semibold text-primary-600">
-                        All Bookings
-                      </h3>
-                      <p className="text-xs text-gray-600 mt-1">
-                        View all appointments
-                      </p>
-                    </Link>
+                    </div>
+                    <p className="text-gray-700">
+                      Welcome to the Admin Dashboard. Use the navigation menu to manage doctors, patients,
+                      and view system statistics. Pending doctor approvals are highlighted above and require
+                      immediate attention.
+                    </p>
                   </div>
-                </div>
-
-                {/* Recent Activity or Info Box */}
-                <div className="card bg-gradient-to-r from-primary-50 to-secondary-50 border-2 border-primary-200 rounded-xl p-8">
-                  <h3 className="text-lg font-bold text-primary-600 mb-2">
-                    System Information
-                  </h3>
-                  <p className="text-primary-700 text-sm">
-                    Welcome to the Admin Dashboard. Use the navigation menu to manage doctors, patients,
-                    and view system statistics. Pending doctor approvals are highlighted above and require
-                    immediate attention.
-                  </p>
                 </div>
               </>
             )}

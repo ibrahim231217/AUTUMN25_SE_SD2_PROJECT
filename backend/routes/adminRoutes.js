@@ -10,6 +10,7 @@ const {
   getDashboardStats,
   getAllBookings,
   addAdmin,
+  deletePatientAccount,
 } = require("../controllers/adminController");
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
 
@@ -39,6 +40,9 @@ router.get("/patients", getAllPatients);
 
 // @route   DELETE /api/admin/doctor/:id - Delete approved doctor
 router.delete("/doctor/:id", deleteDoctorAccount);
+
+// @route   DELETE /api/admin/patient/:id - Delete patient
+router.delete("/patient/:id", deletePatientAccount);
 
 // @route   GET /api/admin/statistics - Get dashboard statistics
 router.get("/statistics", getDashboardStats);

@@ -113,7 +113,7 @@ const BookAppointment = ({ user, onLogout }) => {
       <div className="flex">
         <Sidebar role="patient" />
 
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ml-64">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold text-slate-800 mb-8">Book Appointment</h1>
 

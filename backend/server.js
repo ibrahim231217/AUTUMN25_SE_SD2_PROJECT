@@ -1,6 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
+const path = require("path");
 const connectDB = require("./config/db");
 
 // Import routes
@@ -8,6 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 const patientRoutes = require("./routes/patientRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -22,12 +25,22 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+  })
+);
+
+// Serve static files from uploads directory
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/patient", patientRoutes);
 app.use("/api/doctor", doctorRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // Health check route
 app.get("/api/health", (req, res) => {

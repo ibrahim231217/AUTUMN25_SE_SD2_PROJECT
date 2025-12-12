@@ -4,6 +4,10 @@ const {
   getDoctors,
   bookAppointment,
   getBookings,
+  updateProfile,
+  updatePassword,
+  cancelBooking,
+  updateBooking,
 } = require("../controllers/patientController");
 const { authMiddleware, isPatient } = require("../middleware/authMiddleware");
 
@@ -23,5 +27,17 @@ router.post("/book", bookAppointment);
 
 // @route   GET /api/patient/bookings
 router.get("/bookings", getBookings);
+
+// @route   PATCH /api/patient/update-profile
+router.patch("/update-profile", updateProfile);
+
+// @route   PATCH /api/patient/update-password
+router.patch("/update-password", updatePassword);
+
+// @route   PATCH /api/patient/booking/:id/cancel
+router.patch("/booking/:id/cancel", cancelBooking);
+
+// @route   PATCH /api/patient/booking/:id
+router.patch("/booking/:id", updateBooking);
 
 module.exports = router;

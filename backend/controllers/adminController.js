@@ -271,7 +271,7 @@ const getDashboardStats = async (req, res) => {
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     const appointmentsToday = await Booking.countDocuments({
-      date: { $gte: today, $lt: tomorrow },
+      appointmentTime: { $gte: today, $lt: tomorrow },
     });
 
     res.status(200).json({
@@ -563,6 +563,50 @@ const updateDoctor = async (req, res) => {
   }
 };
 
+// @desc    Delete a patient
+// @route   DELETE /api/admin/patient/:id
+// @access  Admin only
+const deletePatientAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find and validate patient exists
+    const patient = await User.findById(id);
+
+    if (!patient) {
+      return res.status(404).json({
+        success: false,
+        message: "Patient not found",
+      });
+    }
+
+    // Check if user is actually a patient
+    if (patient.role !== "patient") {
+      return res.status(400).json({
+        success: false,
+        message: "User is not a patient",
+      });
+    }
+
+    // Delete all bookings for this patient
+    await Booking.deleteMany({ patientId: id });
+
+    // Delete the patient
+    await User.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Patient and associated bookings deleted successfully",
+      data: { deletedPatientId: id },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getAllDoctors,
@@ -576,4 +620,5 @@ module.exports = {
   addAdmin,
   getDoctors,
   updateDoctor,
+  deletePatientAccount,
 };

@@ -89,35 +89,36 @@ const DoctorBookings = ({ user, onLogout }) => {
 
   const getStatusColor = (status) => {
     const colors = {
-      pending: "bg-yellow-100 text-yellow-700",
-      accepted: "bg-green-100 text-green-700",
-      rejected: "bg-red-100 text-red-700",
+      pending: "badge-warning",
+      accepted: "badge-success",
+      rejected: "badge-error",
     };
-    return colors[status] || "bg-gray-100 text-gray-700";
+    return colors[status] || "badge-primary";
   };
 
   return (
-    <div className="min-h-screen bg-neutral-light">
+    <div className="page-container">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
         <Sidebar role="doctor" />
 
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ml-64">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold text-primary-600 mb-8">
+            <h1 className="section-header mb-2">
               Appointment Requests
             </h1>
+            <p className="section-subtitle mb-8">Manage patient appointment requests</p>
 
             {/* Filter Buttons */}
-            <div className="card bg-white rounded-xl p-6 mb-8">
+            <div className="card rounded-xl p-6 mb-8">
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => setFilterStatus("all")}
                   className={`px-4 py-2 rounded-xl font-medium transition ${
                     filterStatus === "all"
                       ? "btn-primary"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "btn-outline"
                   }`}
                 >
                   All ({bookings.length})
@@ -126,8 +127,8 @@ const DoctorBookings = ({ user, onLogout }) => {
                   onClick={() => setFilterStatus("pending")}
                   className={`px-4 py-2 rounded-xl font-medium transition ${
                     filterStatus === "pending"
-                      ? "badge-warning text-yellow-700"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "btn-primary"
+                      : "btn-outline"
                   }`}
                 >
                   Pending ({bookings.filter((b) => b.status === "pending").length})
@@ -136,8 +137,8 @@ const DoctorBookings = ({ user, onLogout }) => {
                   onClick={() => setFilterStatus("accepted")}
                   className={`px-4 py-2 rounded-xl font-medium transition ${
                     filterStatus === "accepted"
-                      ? "badge-success text-green-700"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "btn-primary"
+                      : "btn-outline"
                   }`}
                 >
                   Accepted (
@@ -147,8 +148,8 @@ const DoctorBookings = ({ user, onLogout }) => {
                   onClick={() => setFilterStatus("rejected")}
                   className={`px-4 py-2 rounded-xl font-medium transition ${
                     filterStatus === "rejected"
-                      ? "badge-error text-red-700"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "btn-primary"
+                      : "btn-outline"
                   }`}
                 >
                   Rejected (
@@ -164,7 +165,7 @@ const DoctorBookings = ({ user, onLogout }) => {
                 <p className="text-gray-600">Loading appointments...</p>
               </div>
             ) : filteredBookings.length === 0 ? (
-              <div className="card bg-white rounded-xl p-12 text-center">
+              <div className="card text-center p-12">
                 <p className="text-gray-500 text-lg">No appointments found</p>
               </div>
             ) : (
@@ -172,20 +173,28 @@ const DoctorBookings = ({ user, onLogout }) => {
                 {filteredBookings.map((booking) => (
                   <div
                     key={booking._id}
-                    className="card bg-white rounded-xl hover:shadow-lg transition overflow-hidden"
+                    className="card group"
                   >
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-6">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-secondary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-lg font-bold text-secondary-600">
-                              {booking.patientId?.username
-                                ?.charAt(0)
-                                .toUpperCase() || "P"}
-                            </span>
-                          </div>
+                          {booking.patientId?.profileImage ? (
+                            <img
+                              src={booking.patientId.profileImage}
+                              alt={booking.patientId.username}
+                              className="w-12 h-12 rounded-full object-cover border-2 border-blue-600 flex-shrink-0"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                              <span className="text-lg font-bold text-white">
+                                {booking.patientId?.username
+                                  ?.charAt(0)
+                                  .toUpperCase() || "P"}
+                              </span>
+                            </div>
+                          )}
                           <div>
-                            <h3 className="font-semibold text-primary-600">
+                            <h3 className="font-semibold text-gray-900">
                               {booking.patientId?.username ||
                                 "Unknown Patient"}
                             </h3>

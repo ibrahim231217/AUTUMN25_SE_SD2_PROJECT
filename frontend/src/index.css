@@ -4,22 +4,64 @@
 
 /* ============================================
    DESIGN SYSTEM - COLOR PALETTE
+   Modern Healthcare UI - 2024
    ============================================ */
 :root {
-  --primary: #003366;
-  --primary-light: #f0f6fb;
-  --secondary: #00A896;
-  --secondary-light: #f0fffe;
-  --accent: #E0F7FA;
-  --action: #FF7043;
+  /* Primary - Medical Trust & Professionalism */
+  --primary: #0066CC;
+  --primary-dark: #0052A3;
+  --primary-light: #EBF5FF;
+  
+  /* Success - Positive Actions */
+  --success: #10B981;
+  --success-light: #D1FAE5;
+  
+  /* Warning - Pending States */
+  --warning: #F59E0B;
+  --warning-light: #FEF3C7;
+  
+  /* Error - Critical Actions */
+  --error: #EF4444;
+  --error-light: #FEE2E2;
+  
+  /* Accent - Interactive Elements */
+  --accent: #14B8A6;
+  --accent-light: #CCFBF1;
+  
+  /* Neutrals - Backgrounds & Text */
   --white: #FFFFFF;
-  --neutral-light: #f8f9fa;
-  --text-primary: #1a1a1a;
-  --text-secondary: #666666;
-  --border-light: #e9ecef;
-  --success: #4CAF50;
-  --warning: #FFC107;
-  --error: #F44336;
+  --neutral-50: #F8FAFC;
+  --neutral-100: #F1F5F9;
+  --neutral-200: #E2E8F0;
+  --neutral-300: #CBD5E1;
+  --neutral-400: #94A3B8;
+  --neutral-500: #64748B;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1E293B;
+  --neutral-900: #0F172A;
+  --neutral-950: #020617;
+  
+  /* Text Colors */
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --text-tertiary: #94A3B8;
+  --text-heading: #020617; /* blue-950 for headings */
+  
+  /* Typography */
+  --font-heading: 'Merriweather', serif;
+  --font-body: 'Kanit', sans-serif;
+  
+  /* Shadows - Elevation System */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -30,161 +72,259 @@
 
 /* ============================================
    TYPOGRAPHY & BASE STYLES
+   Optimized for readability and accessibility
    ============================================ */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--white);
-  color: var(--text-primary);
+  background-color: var(--neutral-50);
+  color: #000000;
+  font-size: 16px;
   line-height: 1.6;
+  font-weight: 400;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--primary);
+  font-family: var(--font-heading);
+  color: var(--text-heading);
   font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* Balanced heading sizes */
+h1 { font-size: 2rem; }      /* 32px */
+h2 { font-size: 1.75rem; }   /* 28px */
+h3 { font-size: 1.5rem; }    /* 24px */
+h4 { font-size: 1.25rem; }   /* 20px */
+h5 { font-size: 1.125rem; }  /* 18px */
+h6 { font-size: 1rem; }      /* 16px */
+
+p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
 /* ============================================
-   BUTTON STYLES - DESIGN PRINCIPLES
+   ANIMATIONS & TRANSITIONS
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-base) ease-out;
+}
+
+.animate-slide-in {
+  animation: slideInRight var(--transition-base) ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--transition-fast) ease-out;
+}
+
+/* ============================================
+   BUTTON STYLES - MODERN DESIGN
    ============================================ */
 @layer components {
-  /* Primary Buttons - Action buttons */
+  /* Primary Buttons */
   .btn-primary {
-    @apply px-6 py-3 text-white font-semibold rounded-xl transition-all duration-200 ease-out;
-    background-color: var(--primary);
+    @apply px-4 py-2 text-white font-semibold rounded-lg;
+    @apply transition-all duration-200 ease-out;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    box-shadow: var(--shadow-md);
   }
 
   .btn-primary:hover {
-    background-color: #002d5c;
-    @apply shadow-medium;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
   }
 
   .btn-primary:active {
-    @apply scale-95;
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
   }
 
-  /* Secondary Buttons - Alternative actions */
+  .btn-primary:focus {
+    --tw-ring-color: var(--primary);
+  }
+
+  /* Secondary Buttons */
   .btn-secondary {
-    @apply px-6 py-3 text-white font-semibold rounded-xl transition-all duration-200 ease-out;
-    background-color: var(--secondary);
-  }
-
-  .btn-secondary:hover {
-    background-color: #008b7e;
-    @apply shadow-medium;
-  }
-
-  .btn-secondary:active {
-    @apply scale-95;
-  }
-
-  /* Action Buttons - High contrast (Book Appointment) */
-  .btn-action {
-    @apply px-6 py-3 text-white font-semibold rounded-xl transition-all duration-200 ease-out;
-    background-color: var(--action);
-  }
-
-  .btn-action:hover {
-    background-color: #ff5722;
-    @apply shadow-medium;
-  }
-
-  .btn-action:active {
-    @apply scale-95;
-  }
-
-  /* Outline Buttons - Secondary emphasis */
-  .btn-outline {
-    @apply px-6 py-3 border-2 font-semibold rounded-xl transition-all duration-200 ease-out;
-    border-color: var(--primary);
+    @apply px-4 py-2 font-semibold rounded-lg;
+    @apply transition-all duration-200 ease-out;
+    @apply border-2 focus:outline-none focus:ring-2 focus:ring-offset-2;
     color: var(--primary);
+    border-color: var(--primary);
     background-color: transparent;
   }
 
-  .btn-outline:hover {
-    @apply bg-primary-50;
-    border-color: #002d5c;
-    color: #002d5c;
+  .btn-secondary:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-1px);
   }
 
-  .btn-outline:active {
-    @apply scale-95;
+  .btn-secondary:active {
+    transform: translateY(0);
   }
 
-  /* Ghost Buttons - Minimal style */
+  /* Success Buttons */
+  .btn-success {
+    @apply px-4 py-2 text-white font-semibold rounded-lg;
+    @apply transition-all duration-200 ease-out;
+    background-color: var(--success);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-success:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Action Buttons */
+  .btn-action {
+    @apply px-4 py-2 text-white font-semibold rounded-lg;
+    @apply transition-all duration-200 ease-out;
+    background: linear-gradient(135deg, var(--accent) 0%, #0D9488 100%);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Ghost Buttons */
   .btn-ghost {
-    @apply px-4 py-2 font-medium rounded-lg transition-all duration-150;
-    color: var(--primary);
+    @apply px-4 py-2 font-medium rounded-lg;
+    @apply transition-all duration-150;
+    color: var(--text-secondary);
     background-color: transparent;
   }
 
   .btn-ghost:hover {
-    @apply bg-primary-50 active:scale-95;
+    background-color: var(--neutral-100);
+    color: var(--text-primary);
   }
 
   /* ============================================
-     CARD STYLES
+     CARD STYLES - MODERN ELEVATION
      ============================================ */
   .card {
-    @apply bg-white rounded-2xl p-6 shadow-soft;
-    @apply border border-gray-200 transition-all duration-300;
+    @apply bg-white rounded-xl p-4;
+    @apply border border-gray-200;
+    @apply transition-all duration-300;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
 
   .card-elevated {
-    @apply bg-white rounded-2xl p-6 shadow-medium border border-gray-200;
+    @apply bg-white rounded-xl p-4;
+    @apply border border-gray-200;
     @apply transition-all duration-300;
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-elevated:hover {
+    box-shadow: var(--shadow-lg);
   }
 
   /* ============================================
-     INPUT FIELDS
+     INPUT FIELDS - MODERN FOCUS STATES
      ============================================ */
   .input-field {
-    @apply w-full px-4 py-3 border-2 rounded-xl bg-white text-gray-900 font-medium transition-all duration-200 placeholder:text-gray-400;
-    border-color: #d1d5db;
+    @apply w-full px-3 py-2 border-2 rounded-lg bg-white;
+    @apply text-gray-900 font-medium;
+    @apply transition-all duration-200;
+    @apply placeholder:text-gray-400;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-1;
+    border-color: var(--neutral-300);
   }
 
   .input-field:hover {
-    border-color: #9ca3af;
+    border-color: var(--neutral-400);
   }
 
   .input-field:focus {
-    outline: none;
-    border-color: var(--secondary);
+    border-color: var(--primary);
+    --tw-ring-color: var(--primary-light);
   }
 
   /* ============================================
      BADGE & STATUS STYLES
      ============================================ */
   .badge-primary {
-    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
-    background-color: #f0f6fb;
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold;
+    background-color: var(--primary-light);
     color: var(--primary);
   }
 
-  .badge-secondary {
-    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
-    background-color: #f0fffe;
-    color: var(--secondary);
-  }
-
   .badge-success {
-    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
-    background-color: #e8f5e9;
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold;
+    background-color: var(--success-light);
     color: var(--success);
   }
 
   .badge-warning {
-    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
-    background-color: #fff8e1;
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold;
+    background-color: var(--warning-light);
     color: var(--warning);
   }
 
   .badge-error {
-    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
-    background-color: #ffebee;
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold;
+    background-color: var(--error-light);
     color: var(--error);
   }
 
@@ -193,35 +333,17 @@ h1, h2, h3, h4, h5, h6 {
      ============================================ */
   .page-container {
     @apply min-h-screen;
-    background-color: var(--neutral-light);
+    background-color: var(--neutral-50);
   }
 
   .section-header {
-    @apply text-3xl md:text-4xl font-bold mb-8;
-    color: var(--primary);
+    @apply text-2xl md:text-3xl font-bold mb-6;
+    color: var(--text-primary);
   }
 
   .section-subtitle {
-    @apply text-lg mb-6;
+    @apply text-base mb-4;
     color: var(--text-secondary);
-  }
-
-  /* ============================================
-     NAVIGATION STYLES
-     ============================================ */
-  .nav-link {
-    @apply px-4 py-2 font-medium rounded-lg transition-all duration-200;
-    color: var(--text-secondary);
-  }
-
-  .nav-link:hover {
-    background-color: #f0f6fb;
-    color: var(--primary);
-  }
-
-  .nav-link.active {
-    background-color: #f0f6fb;
-    color: var(--primary);
   }
 
   /* ============================================
@@ -233,7 +355,7 @@ h1, h2, h3, h4, h5, h6 {
 
   .form-label {
     @apply block text-sm font-semibold mb-2;
-    color: var(--primary);
+    color: var(--text-primary);
   }
 
   .form-error {
@@ -247,28 +369,37 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* ============================================
-     TABLE STYLES
+     TABLE STYLES - MODERN DESIGN
      ============================================ */
   .table-container {
     @apply overflow-x-auto rounded-xl border border-gray-200;
+    box-shadow: var(--shadow-sm);
   }
 
   .table-header {
-    @apply font-semibold;
-    background-color: #f0f6fb;
-    color: var(--primary);
+    @apply font-semibold text-sm uppercase tracking-wide;
+    background-color: var(--neutral-100);
+    color: var(--text-primary);
+    padding: 1rem 1.5rem;
   }
 
   .table-row {
-    @apply border-b border-gray-200 transition-colors;
+    @apply border-b border-gray-200;
+    @apply transition-colors duration-150;
   }
 
   .table-row:hover {
-    background-color: #f0fffe;
+    background-color: var(--neutral-50);
+  }
+
+  .table-row:nth-child(even) {
+    background-color: rgba(248, 250, 252, 0.5);
   }
 
   .table-cell {
-    @apply px-4 py-3;
+    @apply px-6 py-4;
+    font-size: 0.9375rem; /* 15px - readable size */
+    line-height: 1.5;
   }
 
   /* ============================================
@@ -279,13 +410,39 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   /* ============================================
+     LOADING STATES
+     ============================================ */
+  .skeleton {
+    @apply bg-gray-200 rounded animate-pulse;
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--neutral-200) 0%,
+      var(--neutral-100) 50%,
+      var(--neutral-200) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* ============================================
      ACCESSIBILITY
      ============================================ */
+  .focus-visible:focus {
+    @apply outline-none ring-2 ring-offset-2;
+    --tw-ring-color: var(--primary);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    * {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }

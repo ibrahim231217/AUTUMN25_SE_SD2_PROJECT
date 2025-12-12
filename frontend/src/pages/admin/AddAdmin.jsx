@@ -74,7 +74,7 @@ const AddAdmin = ({ user, onLogout }) => {
       <div className="flex">
         <Sidebar role="admin" />
 
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ml-64">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold text-primary-600 mb-8">Add New Admin</h1>
 

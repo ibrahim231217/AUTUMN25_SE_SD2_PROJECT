@@ -21,11 +21,33 @@ const getProfile = async (req, res) => {
 };
 
 // @desc    Get doctor's bookings
-// @route   GET /api/doctor/bookings
+// @route   GET /api/doctor/bookings?status=pending&startDate=2024-01-01&endDate=2024-12-31
 // @access  Private (Doctor)
 const getBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({ doctorId: req.user._id })
+    const { status, startDate, endDate } = req.query;
+
+    let filter = { doctorId: req.user._id };
+
+    // Filter by status
+    if (status && status !== "all") {
+      filter.status = status;
+    }
+
+    // Filter by date range
+    if (startDate || endDate) {
+      filter.appointmentTime = {};
+      if (startDate) {
+        filter.appointmentTime.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        filter.appointmentTime.$lte = end;
+      }
+    }
+
+    const bookings = await Booking.find(filter)
       .populate("patientId", "username email")
       .sort({ createdAt: -1 });
 

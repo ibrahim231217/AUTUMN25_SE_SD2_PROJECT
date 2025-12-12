@@ -33,102 +33,97 @@ const MyBookings = ({ user, onLogout }) => {
     }
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      pending: "badge-warning",
-      accepted: "badge-success",
-      rejected: "badge-error",
-    };
-    return colors[status] || "badge-primary";
-  };
-
   return (
-    <div className="page-container">
+    <div className="min-h-screen bg-neutral-50">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
         <Sidebar role="patient" />
 
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 ml-64">
           <div className="max-w-6xl mx-auto">
-            <h1 className="section-header mb-2">My Appointments</h1>
-            <p className="section-subtitle mb-8">Manage all your medical appointments</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Appointments</h1>
+            <p className="text-gray-600 mb-8">Manage all your medical appointments</p>
 
             {/* Filter Buttons */}
             <div className="card mb-8">
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => setFilterStatus("all")}
-                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
                     filterStatus === "all"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-white border-2 border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600"
                   }`}
                 >
                   All ({bookings.length})
                 </button>
                 <button
                   onClick={() => setFilterStatus("pending")}
-                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
                     filterStatus === "pending"
-                      ? "bg-yellow-500 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-amber-500 text-white shadow-md"
+                      : "bg-white border-2 border-gray-300 text-gray-700 hover:border-amber-500 hover:text-amber-600"
                   }`}
                 >
-                  Pending (
-                  {bookings.filter((b) => b.status === "pending").length})
+                  Pending ({bookings.filter((b) => b.status === "pending").length})
                 </button>
                 <button
                   onClick={() => setFilterStatus("accepted")}
-                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
                     filterStatus === "accepted"
-                      ? "bg-green-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-green-600 text-white shadow-md"
+                      : "bg-white border-2 border-gray-300 text-gray-700 hover:border-green-600 hover:text-green-600"
                   }`}
                 >
-                  Accepted (
-                  {bookings.filter((b) => b.status === "accepted").length})
+                  Accepted ({bookings.filter((b) => b.status === "accepted").length})
                 </button>
                 <button
                   onClick={() => setFilterStatus("rejected")}
-                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
                     filterStatus === "rejected"
-                      ? "bg-red-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-red-600 text-white shadow-md"
+                      : "bg-white border-2 border-gray-300 text-gray-700 hover:border-red-600 hover:text-red-600"
                   }`}
                 >
-                  Rejected (
-                  {bookings.filter((b) => b.status === "rejected").length})
+                  Rejected ({bookings.filter((b) => b.status === "rejected").length})
                 </button>
               </div>
             </div>
 
             {/* Bookings List */}
             {loading ? (
-              <div className="text-center py-12">
-                <div className="w-12 h-12 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading appointments...</p>
+              <div className="card text-center py-12">
+                <div className="inline-block w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-gray-600 mt-2">Loading appointments...</p>
               </div>
             ) : filteredBookings.length === 0 ? (
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-12 text-center">
-                <p className="text-gray-500 text-lg">No appointments found</p>
+              <div className="card text-center p-12">
+                <div className="text-6xl mb-4">📅</div>
+                <p className="text-gray-600 text-lg">No appointments found</p>
               </div>
             ) : (
               <div className="grid gap-6">
                 {filteredBookings.map((booking) => (
-                  <div key={booking._id} className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition overflow-hidden">
+                  <div key={booking._id} className="rounded-2xl bg-white border-2 border-gray-200 hover:shadow-lg transition overflow-hidden">
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-6">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-lg font-bold text-blue-600">
-                              {booking.doctorId?.username
-                                ?.charAt(0)
-                                .toUpperCase() || "D"}
-                            </span>
-                          </div>
+                          {booking.doctorId?.profileImage ? (
+                            <img
+                              src={booking.doctorId.profileImage}
+                              alt={`Dr. ${booking.doctorId.username}`}
+                              className="w-12 h-12 rounded-full object-cover border-2 border-green-600 flex-shrink-0"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-lg font-bold text-white">
+                                {booking.doctorId?.username?.charAt(0).toUpperCase() || "D"}
+                              </span>
+                            </div>
+                          )}
                           <div>
-                            <h3 className="font-semibold text-gray-800">
+                            <h3 className="font-bold text-gray-900 text-lg">
                               Dr. {booking.doctorId?.username || "Unknown"}
                             </h3>
                             <p className="text-sm text-gray-600">
@@ -137,9 +132,9 @@ const MyBookings = ({ user, onLogout }) => {
                           </div>
                         </div>
                         <span
-                          className={`px-3 py-1 text-sm font-semibold rounded-full ${
+                          className={`px-3 py-1.5 text-sm font-semibold rounded-full ${
                             booking.status === "pending"
-                              ? "bg-yellow-100 text-yellow-700"
+                              ? "bg-amber-100 text-amber-700"
                               : booking.status === "accepted"
                               ? "bg-green-100 text-green-700"
                               : "bg-red-100 text-red-700"
@@ -152,18 +147,12 @@ const MyBookings = ({ user, onLogout }) => {
                       <div className="grid md:grid-cols-2 gap-6 border-t border-gray-200 pt-6">
                         <div>
                           <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Category</p>
-                          <p className="text-gray-800 font-medium">
-                            {booking.category}
-                          </p>
+                          <p className="text-gray-900 font-medium">{booking.category}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                            Appointment Time
-                          </p>
-                          <p className="text-gray-800 font-medium">
-                            {new Date(
-                              booking.appointmentTime
-                            ).toLocaleString()}
+                          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Appointment Time</p>
+                          <p className="text-gray-900 font-medium">
+                            {new Date(booking.appointmentTime).toLocaleString()}
                           </p>
                         </div>
                         <div>
@@ -174,9 +163,7 @@ const MyBookings = ({ user, onLogout }) => {
                         </div>
                         {booking.message && (
                           <div>
-                            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                              Your Message
-                            </p>
+                            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Your Message</p>
                             <p className="text-sm text-gray-700 line-clamp-2">{booking.message}</p>
                           </div>
                         )}

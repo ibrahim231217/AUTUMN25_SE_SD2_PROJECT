@@ -16,6 +16,7 @@ import PatientDashboard from "./pages/patient/PatientDashboard";
 import DoctorList from "./pages/patient/DoctorList";
 import BookAppointment from "./pages/patient/BookAppointment.jsx";
 import MyBookings from "./pages/patient/MyBookings";
+import PatientProfile from "./pages/patient/PatientProfile";
 
 // Doctor Pages
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
@@ -35,6 +36,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -43,6 +45,7 @@ function App() {
     if (userData && token) {
       setUser(JSON.parse(userData));
     }
+    setLoading(false);
   }, []);
 
   const handleLogout = () => {
@@ -50,6 +53,14 @@ function App() {
     localStorage.removeItem("token");
     setUser(null);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
   return (
     <Router>
@@ -89,6 +100,14 @@ function App() {
           element={
             <ProtectedRoute user={user} role="patient">
               <MyBookings user={user} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/patient/profile"
+          element={
+            <ProtectedRoute user={user} role="patient">
+              <PatientProfile user={user} onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
