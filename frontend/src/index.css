@@ -53,38 +53,76 @@ h1, h2, h3, h4, h5, h6 {
 @layer components {
   /* Primary Buttons - Action buttons */
   .btn-primary {
-    @apply px-6 py-3 bg-primary-600 text-white font-semibold rounded-xl;
-    @apply transition-all duration-200 ease-out;
-    @apply hover:bg-primary-700 hover:shadow-medium active:scale-95;
+    @apply px-6 py-3 text-white font-semibold rounded-xl transition-all duration-200 ease-out;
+    background-color: var(--primary);
+  }
+
+  .btn-primary:hover {
+    background-color: #002d5c;
+    @apply shadow-medium;
+  }
+
+  .btn-primary:active {
+    @apply scale-95;
   }
 
   /* Secondary Buttons - Alternative actions */
   .btn-secondary {
-    @apply px-6 py-3 bg-secondary-600 text-white font-semibold rounded-xl;
-    @apply transition-all duration-200 ease-out;
-    @apply hover:bg-secondary-700 hover:shadow-medium active:scale-95;
+    @apply px-6 py-3 text-white font-semibold rounded-xl transition-all duration-200 ease-out;
+    background-color: var(--secondary);
+  }
+
+  .btn-secondary:hover {
+    background-color: #008b7e;
+    @apply shadow-medium;
+  }
+
+  .btn-secondary:active {
+    @apply scale-95;
   }
 
   /* Action Buttons - High contrast (Book Appointment) */
   .btn-action {
-    @apply px-6 py-3 bg-action-500 text-white font-semibold rounded-xl;
-    @apply transition-all duration-200 ease-out;
-    @apply hover:bg-action-600 hover:shadow-medium active:scale-95;
+    @apply px-6 py-3 text-white font-semibold rounded-xl transition-all duration-200 ease-out;
+    background-color: var(--action);
+  }
+
+  .btn-action:hover {
+    background-color: #ff5722;
+    @apply shadow-medium;
+  }
+
+  .btn-action:active {
+    @apply scale-95;
   }
 
   /* Outline Buttons - Secondary emphasis */
   .btn-outline {
-    @apply px-6 py-3 border-2 border-primary-600 text-primary-600 font-semibold rounded-xl;
-    @apply transition-all duration-200 ease-out;
-    @apply hover:bg-primary-50 hover:border-primary-700 hover:text-primary-700;
-    @apply active:scale-95;
+    @apply px-6 py-3 border-2 font-semibold rounded-xl transition-all duration-200 ease-out;
+    border-color: var(--primary);
+    color: var(--primary);
+    background-color: transparent;
+  }
+
+  .btn-outline:hover {
+    @apply bg-primary-50;
+    border-color: #002d5c;
+    color: #002d5c;
+  }
+
+  .btn-outline:active {
+    @apply scale-95;
   }
 
   /* Ghost Buttons - Minimal style */
   .btn-ghost {
-    @apply px-4 py-2 text-primary-600 font-medium rounded-lg;
-    @apply transition-all duration-150;
-    @apply hover:bg-primary-50 active:scale-95;
+    @apply px-4 py-2 font-medium rounded-lg transition-all duration-150;
+    color: var(--primary);
+    background-color: transparent;
+  }
+
+  .btn-ghost:hover {
+    @apply bg-primary-50 active:scale-95;
   }
 
   /* ============================================
@@ -104,66 +142,86 @@ h1, h2, h3, h4, h5, h6 {
      INPUT FIELDS
      ============================================ */
   .input-field {
-    @apply w-full px-4 py-3 border-2 border-gray-300 rounded-xl;
-    @apply bg-white text-gray-900 font-medium;
-    @apply transition-all duration-200;
-    @apply focus:outline-none focus:border-secondary-600;
-    @apply placeholder:text-gray-400;
+    @apply w-full px-4 py-3 border-2 rounded-xl bg-white text-gray-900 font-medium transition-all duration-200 placeholder:text-gray-400;
+    border-color: #d1d5db;
   }
 
   .input-field:hover {
-    @apply border-gray-400;
+    border-color: #9ca3af;
+  }
+
+  .input-field:focus {
+    outline: none;
+    border-color: var(--secondary);
   }
 
   /* ============================================
      BADGE & STATUS STYLES
      ============================================ */
   .badge-primary {
-    @apply inline-block px-3 py-1 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold;
+    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
+    background-color: #f0f6fb;
+    color: var(--primary);
   }
 
   .badge-secondary {
-    @apply inline-block px-3 py-1 bg-secondary-100 text-secondary-600 rounded-full text-sm font-semibold;
+    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
+    background-color: #f0fffe;
+    color: var(--secondary);
   }
 
   .badge-success {
-    @apply inline-block px-3 py-1 bg-green-100 text-green-600 rounded-full text-sm font-semibold;
+    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
+    background-color: #e8f5e9;
+    color: var(--success);
   }
 
   .badge-warning {
-    @apply inline-block px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-sm font-semibold;
+    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
+    background-color: #fff8e1;
+    color: var(--warning);
   }
 
   .badge-error {
-    @apply inline-block px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm font-semibold;
+    @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
+    background-color: #ffebee;
+    color: var(--error);
   }
 
   /* ============================================
      LAYOUT UTILITIES
      ============================================ */
   .page-container {
-    @apply min-h-screen bg-neutral-light;
+    @apply min-h-screen;
+    background-color: var(--neutral-light);
   }
 
   .section-header {
-    @apply text-3xl md:text-4xl font-bold text-primary-600 mb-8;
+    @apply text-3xl md:text-4xl font-bold mb-8;
+    color: var(--primary);
   }
 
   .section-subtitle {
-    @apply text-lg text-gray-600 mb-6;
+    @apply text-lg mb-6;
+    color: var(--text-secondary);
   }
 
   /* ============================================
      NAVIGATION STYLES
      ============================================ */
   .nav-link {
-    @apply px-4 py-2 text-gray-700 font-medium rounded-lg;
-    @apply transition-all duration-200;
-    @apply hover:bg-primary-50 hover:text-primary-600;
+    @apply px-4 py-2 font-medium rounded-lg transition-all duration-200;
+    color: var(--text-secondary);
+  }
+
+  .nav-link:hover {
+    background-color: #f0f6fb;
+    color: var(--primary);
   }
 
   .nav-link.active {
-    @apply bg-primary-100 text-primary-600;
+    background-color: #f0f6fb;
+    color: var(--primary);
   }
 
   /* ============================================
@@ -174,15 +232,18 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .form-label {
-    @apply block text-sm font-semibold text-primary-600 mb-2;
+    @apply block text-sm font-semibold mb-2;
+    color: var(--primary);
   }
 
   .form-error {
-    @apply text-red-600 text-sm font-medium mt-1;
+    @apply text-sm font-medium mt-1;
+    color: var(--error);
   }
 
   .form-helper {
-    @apply text-gray-500 text-xs mt-1;
+    @apply text-xs mt-1;
+    color: var(--text-secondary);
   }
 
   /* ============================================
@@ -193,12 +254,17 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .table-header {
-    @apply bg-primary-50 text-primary-600 font-semibold;
+    @apply font-semibold;
+    background-color: #f0f6fb;
+    color: var(--primary);
   }
 
   .table-row {
     @apply border-b border-gray-200 transition-colors;
-    @apply hover:bg-accent-50;
+  }
+
+  .table-row:hover {
+    background-color: #f0fffe;
   }
 
   .table-cell {
