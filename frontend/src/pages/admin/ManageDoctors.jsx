@@ -6,17 +6,8 @@ import api from "../../utils/api";
 const ManageDoctors = ({ user, onLogout }) => {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editingDoctor, setEditingDoctor] = useState(null);
-  const [editFormData, setEditFormData] = useState({});
-  const [savingId, setSavingId] = useState(null);
-
-  const specialities = [
-    "Dermatologist",
-    "Pathologist",
-    "Neurologist",
-    "Cardiologist",
-    "Endocrinologist",
-  ];
+  const [deleteId, setDeleteId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchDoctors();
@@ -25,7 +16,7 @@ const ManageDoctors = ({ user, onLogout }) => {
   const fetchDoctors = async () => {
     try {
       const response = await api.get("/admin/doctors");
-      setDoctors(response.data.data);
+      setDoctors(response.data.data || []);
     } catch (error) {
       console.error("Error fetching doctors:", error);
     } finally {
@@ -33,269 +24,150 @@ const ManageDoctors = ({ user, onLogout }) => {
     }
   };
 
-  const handleEdit = (doctor) => {
-    setEditingDoctor(doctor._id);
-    setEditFormData({
-      username: doctor.username,
-      email: doctor.email,
-      speciality: doctor.speciality,
-      experience: doctor.experience,
-      description: doctor.description || "",
-    });
-  };
-
-  const handleCancelEdit = () => {
-    setEditingDoctor(null);
-    setEditFormData({});
-  };
-
-  const handleEditChange = (e) => {
-    setEditFormData({
-      ...editFormData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSaveEdit = async (doctorId) => {
-    setSavingId(doctorId);
-
+  const deleteDoctor = async (doctorId) => {
+    setDeleteId(doctorId);
     try {
-      const response = await api.patch(
-        `/admin/update-doctor/${doctorId}`,
-        editFormData
-      );
-
-      if (response.data.success) {
-        setDoctors(
-          doctors.map((doc) =>
-            doc._id === doctorId ? response.data.data : doc
-          )
-        );
-        setEditingDoctor(null);
-        alert("Doctor updated successfully!");
-      }
+      await api.delete(`/admin/doctor/${doctorId}`);
+      setDoctors(doctors.filter((d) => d._id !== doctorId));
+      alert("Doctor deleted successfully");
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to update doctor");
+      alert(error.response?.data?.message || "Error deleting doctor");
     } finally {
-      setSavingId(null);
+      setDeleteId(null);
     }
   };
 
-  const handleDelete = async (doctorId, doctorName) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete Dr. ${doctorName}? This action cannot be undone and will delete all their associated bookings.`
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const response = await api.delete(`/admin/delete-doctor/${doctorId}`);
-
-      if (response.data.success) {
-        setDoctors(doctors.filter((doc) => doc._id !== doctorId));
-        alert("Doctor deleted successfully");
-      }
-    } catch (error) {
-      alert(error.response?.data?.message || "Failed to delete doctor");
-    }
-  };
+  const filteredDoctors = doctors.filter(
+    (doctor) =>
+      doctor.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doctor.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-light">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
         <Sidebar role="admin" />
 
         <main className="flex-1 p-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mb-8">
-              <h1 className="text-3xl font-bold">Manage Doctors</h1>
-              <div className="badge badge-lg badge-primary">
-                {doctors.length} Doctors
-              </div>
+          <div className="max-w-6xl mx-auto">
+            <h1 className="text-3xl font-bold text-primary-600 mb-2">
+              Manage Doctors
+            </h1>
+            <p className="text-gray-600 mb-8">
+              View, update, and manage all registered doctors
+            </p>
+
+            {/* Search Bar */}
+            <div className="mb-8">
+              <input
+                type="text"
+                placeholder="Search by name, email, or speciality..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="input-field w-full px-4 py-3 rounded-xl"
+              />
             </div>
 
             {loading ? (
               <div className="text-center py-12">
-                <span className="loading loading-spinner loading-lg"></span>
+                <p className="text-gray-600">Loading doctors...</p>
               </div>
-            ) : doctors.length === 0 ? (
-              <div className="card bg-white shadow-lg">
-                <div className="card-body text-center py-12">
-                  <p className="text-gray-500 text-lg">
-                    No doctors registered yet
-                  </p>
-                </div>
+            ) : filteredDoctors.length === 0 ? (
+              <div className="card bg-white rounded-xl border-2 border-neutral-medium p-12 text-center">
+                <div className="text-5xl mb-4">👨‍⚕️</div>
+                <h3 className="text-2xl font-bold text-primary-600 mb-2">
+                  No Doctors Found
+                </h3>
+                <p className="text-gray-600">
+                  {searchTerm
+                    ? "No doctors match your search criteria."
+                    : "No doctors registered yet."}
+                </p>
               </div>
             ) : (
               <div className="grid gap-6">
-                {doctors.map((doctor) => (
-                  <div key={doctor._id} className="card bg-white shadow-xl">
-                    <div className="card-body">
-                      {editingDoctor === doctor._id ? (
-                        // Edit Mode
+                {filteredDoctors.map((doctor) => (
+                  <div
+                    key={doctor._id}
+                    className="card bg-white rounded-xl border border-neutral-medium p-6 hover:shadow-lg transition"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className="text-5xl">👨‍⚕️</div>
                         <div>
-                          <h3 className="font-bold text-lg mb-4">
-                            Edit Doctor
+                          <h3 className="text-2xl font-bold text-primary-600">
+                            {doctor.username}
                           </h3>
-                          <div className="grid md:grid-cols-2 gap-4">
-                            <div className="form-control">
-                              <label className="label">
-                                <span className="label-text">Username</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="username"
-                                className="input input-bordered input-sm"
-                                value={editFormData.username}
-                                onChange={handleEditChange}
-                              />
-                            </div>
-
-                            <div className="form-control">
-                              <label className="label">
-                                <span className="label-text">Email</span>
-                              </label>
-                              <input
-                                type="email"
-                                name="email"
-                                className="input input-bordered input-sm"
-                                value={editFormData.email}
-                                onChange={handleEditChange}
-                              />
-                            </div>
-
-                            <div className="form-control">
-                              <label className="label">
-                                <span className="label-text">Specialty</span>
-                              </label>
-                              <select
-                                name="speciality"
-                                className="select select-bordered select-sm"
-                                value={editFormData.speciality}
-                                onChange={handleEditChange}
-                              >
-                                {specialities.map((spec) => (
-                                  <option key={spec} value={spec}>
-                                    {spec}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-
-                            <div className="form-control">
-                              <label className="label">
-                                <span className="label-text">
-                                  Experience (years)
-                                </span>
-                              </label>
-                              <input
-                                type="number"
-                                name="experience"
-                                className="input input-bordered input-sm"
-                                value={editFormData.experience}
-                                onChange={handleEditChange}
-                                min="0"
-                              />
-                            </div>
-
-                            <div className="form-control md:col-span-2">
-                              <label className="label">
-                                <span className="label-text">Description</span>
-                              </label>
-                              <textarea
-                                name="description"
-                                className="textarea textarea-bordered"
-                                value={editFormData.description}
-                                onChange={handleEditChange}
-                              ></textarea>
-                            </div>
-                          </div>
-
-                          <div className="flex gap-2 mt-4">
-                            <button
-                              onClick={() => handleSaveEdit(doctor._id)}
-                              className={`btn btn-success btn-sm ${
-                                savingId === doctor._id ? "loading" : ""
-                              }`}
-                              disabled={savingId === doctor._id}
-                            >
-                              Save
-                            </button>
-                            <button
-                              onClick={handleCancelEdit}
-                              className="btn btn-ghost btn-sm"
-                            >
-                              Cancel
-                            </button>
-                          </div>
+                          <p className="text-gray-600">{doctor.email}</p>
                         </div>
-                      ) : (
-                        // View Mode
-                        <div>
-                          <div className="flex justify-between items-start mb-4">
-                            <div className="flex items-center gap-4">
-                              <div className="avatar placeholder">
-                                <div className="bg-primary text-white rounded-full w-16">
-                                  <span className="text-2xl">
-                                    {doctor.username.charAt(0).toUpperCase()}
-                                  </span>
-                                </div>
-                              </div>
-                              <div>
-                                <h3 className="font-bold text-xl">
-                                  Dr. {doctor.username}
-                                </h3>
-                                <p className="text-sm text-gray-500">
-                                  {doctor.email}
-                                </p>
-                                <div className="flex gap-2 mt-1">
-                                  <span className="badge badge-primary badge-sm">
-                                    {doctor.speciality}
-                                  </span>
-                                  <span className="badge badge-ghost badge-sm">
-                                    {doctor.experience} years
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="flex gap-2">
-                              <button
-                                onClick={() => handleEdit(doctor)}
-                                className="btn btn-sm btn-info"
-                              >
-                                Edit
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleDelete(doctor._id, doctor.username)
-                                }
-                                className="btn btn-sm btn-error"
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          </div>
-
-                          {doctor.description && (
-                            <div className="mt-4">
-                              <p className="text-sm text-gray-600">About:</p>
-                              <p className="text-sm">{doctor.description}</p>
-                            </div>
-                          )}
-
-                          <div className="mt-4 text-xs text-gray-500">
-                            <p>
-                              Registered:{" "}
-                              {new Date(doctor.createdAt).toLocaleDateString()}
-                            </p>
-                          </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <div className="badge-success rounded-full text-sm font-semibold">
+                          ✓ Approved
                         </div>
-                      )}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                      <div>
+                        <p className="text-xs text-gray-600 uppercase tracking-wide">
+                          Speciality
+                        </p>
+                        <p className="font-semibold text-primary-600">
+                          {doctor.speciality}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 uppercase tracking-wide">
+                          Experience
+                        </p>
+                        <p className="font-semibold text-primary-600">
+                          {doctor.experience} years
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 uppercase tracking-wide">
+                          Registered
+                        </p>
+                        <p className="font-semibold text-primary-600">
+                          {new Date(doctor.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-600 uppercase tracking-wide">
+                          Status
+                        </p>
+                        <p className="font-semibold text-green-600">Active</p>
+                      </div>
+                    </div>
+
+                    {doctor.description && (
+                      <div className="mb-6">
+                        <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">
+                          Biography
+                        </p>
+                        <p className="text-gray-700 text-sm bg-neutral-light p-3 rounded-lg">
+                          {doctor.description}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex gap-4">
+                      <button
+                        className="px-4 py-2 btn-primary rounded-xl hover:shadow-medium transition font-semibold text-sm"
+                      >
+                        Edit Profile
+                      </button>
+                      <button
+                        onClick={() => deleteDoctor(doctor._id)}
+                        disabled={deleteId === doctor._id}
+                        className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-semibold text-sm disabled:opacity-50"
+                      >
+                        {deleteId === doctor._id ? "Deleting..." : "Delete"}
+                      </button>
                     </div>
                   </div>
                 ))}

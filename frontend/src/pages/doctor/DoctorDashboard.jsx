@@ -63,7 +63,7 @@ const DoctorDashboard = ({ user, onLogout }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-light">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
@@ -73,7 +73,7 @@ const DoctorDashboard = ({ user, onLogout }) => {
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-slate-800 mb-2">
+              <h1 className="text-3xl font-bold text-primary-600 mb-2">
                 Doctor Dashboard
               </h1>
               <p className="text-gray-600">
@@ -83,11 +83,11 @@ const DoctorDashboard = ({ user, onLogout }) => {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+              <div className="card bg-white p-6 rounded-xl">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-600 text-sm">Total Appointments</p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-primary-600 mt-2">
                       {stats.totalBookings}
                     </p>
                   </div>
@@ -95,11 +95,11 @@ const DoctorDashboard = ({ user, onLogout }) => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+              <div className="card bg-white p-6 rounded-xl">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-600 text-sm">Pending</p>
-                    <p className="text-3xl font-bold text-yellow-600">
+                    <p className="text-3xl font-bold text-yellow-700 mt-2">
                       {stats.pending}
                     </p>
                   </div>
@@ -107,11 +107,11 @@ const DoctorDashboard = ({ user, onLogout }) => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+              <div className="card bg-white p-6 rounded-xl">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-600 text-sm">Accepted</p>
-                    <p className="text-3xl font-bold text-green-600">
+                    <p className="text-3xl font-bold text-green-700 mt-2">
                       {stats.accepted}
                     </p>
                   </div>
@@ -119,11 +119,11 @@ const DoctorDashboard = ({ user, onLogout }) => {
                 </div>
               </div>
 
-              <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+              <div className="card bg-white p-6 rounded-xl">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-600 text-sm">Rejected</p>
-                    <p className="text-3xl font-bold text-red-600">
+                    <p className="text-3xl font-bold text-red-700 mt-2">
                       {stats.rejected}
                     </p>
                   </div>
@@ -136,25 +136,25 @@ const DoctorDashboard = ({ user, onLogout }) => {
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <Link
                 to="/doctor/bookings"
-                className="bg-blue-600 text-white p-6 rounded-lg hover:bg-blue-700 transition shadow-sm"
+                className="card bg-gradient-to-br from-primary-600 to-primary-700 text-white p-6 rounded-xl hover:shadow-lg transition group"
               >
-                <div className="text-2xl mb-2">📋</div>
+                <div className="text-2xl mb-2 group-hover:scale-110 transition">📋</div>
                 <h3 className="font-semibold">Manage Appointments</h3>
-                <p className="text-sm text-blue-100 mt-1">View all bookings</p>
+                <p className="text-sm text-primary-100 mt-1">View all bookings</p>
               </Link>
 
               <Link
                 to="/doctor/profile"
-                className="bg-green-600 text-white p-6 rounded-lg hover:bg-green-700 transition shadow-sm"
+                className="card bg-gradient-to-br from-secondary-600 to-secondary-700 text-white p-6 rounded-xl hover:shadow-lg transition group"
               >
-                <div className="text-2xl mb-2">👤</div>
+                <div className="text-2xl mb-2 group-hover:scale-110 transition">👤</div>
                 <h3 className="font-semibold">Update Profile</h3>
-                <p className="text-sm text-green-100 mt-1">Edit your details</p>
+                <p className="text-sm text-secondary-100 mt-1">Edit your details</p>
               </Link>
 
-              <div className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+              <div className="card bg-white p-6 rounded-xl">
                 <div className="text-2xl mb-2">⚕️</div>
-                <h3 className="font-semibold text-gray-800">Specialty</h3>
+                <h3 className="font-semibold text-primary-600">Specialty</h3>
                 <p className="text-sm text-gray-600 mt-1">
                   {user.speciality || "Not set"}
                 </p>
@@ -162,9 +162,9 @@ const DoctorDashboard = ({ user, onLogout }) => {
             </div>
 
             {/* Profile Info */}
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm mb-8">
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-slate-800">
+            <div className="card bg-white rounded-xl mb-8">
+              <div className="p-6 border-b border-neutral-medium">
+                <h2 className="text-xl font-semibold text-primary-600">
                   Your Profile
                 </h2>
               </div>
@@ -172,25 +172,25 @@ const DoctorDashboard = ({ user, onLogout }) => {
                 <div className="grid md:grid-cols-3 gap-6">
                   <div>
                     <p className="text-gray-600 text-sm">Specialty</p>
-                    <p className="font-semibold text-slate-800">
+                    <p className="font-semibold text-primary-600">
                       {user.speciality || "Not specified"}
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">Experience</p>
-                    <p className="font-semibold text-slate-800">
+                    <p className="font-semibold text-primary-600">
                       {user.experience} years
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">Email</p>
-                    <p className="font-semibold text-slate-800 break-all">
+                    <p className="font-semibold text-primary-600 break-all">
                       {user.email}
                     </p>
                   </div>
                 </div>
                 {user.description && (
-                  <div className="mt-6 pt-6 border-t border-gray-200">
+                  <div className="mt-6 pt-6 border-t border-neutral-medium">
                     <p className="text-gray-600 text-sm">About</p>
                     <p className="text-slate-800 mt-2">{user.description}</p>
                   </div>
@@ -200,28 +200,28 @@ const DoctorDashboard = ({ user, onLogout }) => {
 
             {/* Pending Appointments */}
             {pendingAppointments.length > 0 && (
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm mb-8">
-                <div className="p-6 border-b border-gray-200 bg-yellow-50">
-                  <h2 className="text-xl font-semibold text-slate-800">
+              <div className="card bg-white rounded-xl mb-8">
+                <div className="p-6 border-b border-neutral-medium bg-yellow-50">
+                  <h2 className="text-xl font-semibold text-primary-600">
                     📌 Pending Appointments ({stats.pending})
                   </h2>
                   <p className="text-sm text-gray-600 mt-1">
                     Awaiting your response
                   </p>
                 </div>
-                <div className="divide-y divide-gray-200">
+                <div className="divide-y divide-neutral-medium">
                   {pendingAppointments.map((booking) => (
-                    <div key={booking._id} className="p-6 hover:bg-gray-50">
+                    <div key={booking._id} className="p-6 hover:bg-accent-50 transition">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-lg font-bold text-yellow-600">
+                          <div className="w-12 h-12 bg-secondary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-lg font-bold text-secondary-600">
                               {booking.patientId?.username?.charAt(0).toUpperCase() ||
                                 "P"}
                             </span>
                           </div>
                           <div>
-                            <h3 className="font-semibold text-slate-800">
+                            <h3 className="font-semibold text-primary-600">
                               {booking.patientId?.username || "Unknown Patient"}
                             </h3>
                             <p className="text-sm text-gray-600">
@@ -229,7 +229,7 @@ const DoctorDashboard = ({ user, onLogout }) => {
                             </p>
                           </div>
                         </div>
-                        <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-semibold rounded-full">
+                        <span className="inline-block px-3 py-1 badge-warning rounded-full">
                           {booking.status.toUpperCase()}
                         </span>
                       </div>
@@ -256,7 +256,7 @@ const DoctorDashboard = ({ user, onLogout }) => {
                           <p className="text-gray-600 text-sm">
                             Patient's Message
                           </p>
-                          <p className="text-sm bg-gray-50 p-3 rounded">
+                          <p className="text-sm bg-neutral-light p-3 rounded-lg">
                             {booking.message}
                           </p>
                         </div>
@@ -267,7 +267,7 @@ const DoctorDashboard = ({ user, onLogout }) => {
                           onClick={() =>
                             handleQuickAction(booking._id, "accepted")
                           }
-                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-semibold"
+                          className="px-4 py-2 btn-primary rounded-xl text-sm font-semibold"
                         >
                           ✓ Accept
                         </button>
@@ -275,7 +275,7 @@ const DoctorDashboard = ({ user, onLogout }) => {
                           onClick={() =>
                             handleScheduleNextDay(booking._id)
                           }
-                          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-semibold"
+                          className="px-4 py-2 btn-secondary rounded-xl text-sm font-semibold"
                         >
                           📅 Schedule Next Day
                         </button>
@@ -283,7 +283,7 @@ const DoctorDashboard = ({ user, onLogout }) => {
                           onClick={() =>
                             handleQuickAction(booking._id, "rejected")
                           }
-                          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-semibold"
+                          className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition text-sm font-semibold"
                         >
                           ✕ Reject
                         </button>
@@ -295,16 +295,16 @@ const DoctorDashboard = ({ user, onLogout }) => {
             )}
 
             {/* Recent Bookings Table */}
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm">
-              <div className="p-6 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-slate-800">
+            <div className="card bg-white rounded-xl">
+              <div className="p-6 border-b border-neutral-medium">
+                <h2 className="text-xl font-semibold text-primary-600">
                   Recent Appointments
                 </h2>
               </div>
 
               {loading ? (
                 <div className="p-6 text-center text-gray-600">
-                  <div className="w-12 h-12 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+                  <div className="w-12 h-12 border-4 border-primary-300 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
                   Loading...
                 </div>
               ) : recentBookings.length === 0 ? (
@@ -314,18 +314,18 @@ const DoctorDashboard = ({ user, onLogout }) => {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-primary-50 border-b border-neutral-medium">
                       <tr>
-                        <th className="text-left p-4 text-gray-700 font-semibold text-sm">
+                        <th className="text-left p-4 text-primary-600 font-semibold text-sm">
                           Patient
                         </th>
-                        <th className="text-left p-4 text-gray-700 font-semibold text-sm">
+                        <th className="text-left p-4 text-primary-600 font-semibold text-sm">
                           Category
                         </th>
-                        <th className="text-left p-4 text-gray-700 font-semibold text-sm">
+                        <th className="text-left p-4 text-primary-600 font-semibold text-sm">
                           Date & Time
                         </th>
-                        <th className="text-left p-4 text-gray-700 font-semibold text-sm">
+                        <th className="text-left p-4 text-primary-600 font-semibold text-sm">
                           Status
                         </th>
                       </tr>
@@ -334,7 +334,7 @@ const DoctorDashboard = ({ user, onLogout }) => {
                       {recentBookings.map((booking) => (
                         <tr
                           key={booking._id}
-                          className="border-b border-gray-200 hover:bg-gray-50"
+                          className="border-b border-neutral-medium hover:bg-accent-50 transition"
                         >
                           <td className="p-4">
                             {booking.patientId?.username || "N/A"}
@@ -349,10 +349,10 @@ const DoctorDashboard = ({ user, onLogout }) => {
                             <span
                               className={`inline-block px-3 py-1 text-sm font-semibold rounded-full ${
                                 booking.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-700"
+                                  ? "badge-warning"
                                   : booking.status === "accepted"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-700"
+                                  ? "badge-success"
+                                  : "badge-error"
                               }`}
                             >
                               {booking.status.toUpperCase()}

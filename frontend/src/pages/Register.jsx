@@ -92,16 +92,16 @@ const Register = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50">
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-10">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white mx-auto mb-4 shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg-soft text-3xl">
               ⚕️
             </div>
-            <h1 className="text-3xl font-bold text-slate-800">MediCare</h1>
-            <p className="text-gray-600 text-sm mt-2">
+            <h1 className="text-3xl font-bold text-primary-600">MediCare</h1>
+            <p className="text-gray-600 text-sm mt-2 font-medium">
               Hospital Management System
             </p>
           </div>
@@ -109,7 +109,7 @@ const Register = () => {
           {!selectedRole ? (
             // Role Selection Screen
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold text-slate-800 text-center mb-6">
+              <h2 className="text-xl font-bold text-primary-600 text-center mb-6">
                 Sign up as...
               </h2>
 
@@ -118,15 +118,15 @@ const Register = () => {
                   setSelectedRole("patient");
                   setError("");
                 }}
-                className="w-full p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition group"
+                className="w-full p-6 card text-center group hover:bg-blue-50 hover:border-secondary-400"
               >
-                <div className="text-3xl mb-2 group-hover:scale-110 transition">
+                <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">
                   👨‍🦱
                 </div>
-                <h3 className="font-semibold text-gray-800 group-hover:text-blue-600">
+                <h3 className="font-bold text-primary-600 group-hover:text-secondary-600 transition-colors">
                   Patient
                 </h3>
-                <p className="text-xs text-gray-500">Book appointments</p>
+                <p className="text-xs text-gray-500 mt-1">Book appointments</p>
               </button>
 
               <button
@@ -134,23 +134,23 @@ const Register = () => {
                   setSelectedRole("doctor");
                   setError("");
                 }}
-                className="w-full p-6 bg-white border-2 border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition group"
+                className="w-full p-6 card text-center group hover:bg-green-50 hover:border-secondary-400"
               >
-                <div className="text-3xl mb-2 group-hover:scale-110 transition">
+                <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">
                   👨‍⚕️
                 </div>
-                <h3 className="font-semibold text-gray-800 group-hover:text-green-600">
+                <h3 className="font-bold text-primary-600 group-hover:text-secondary-600 transition-colors">
                   Doctor
                 </h3>
-                <p className="text-xs text-gray-500">Accept appointments</p>
+                <p className="text-xs text-gray-500 mt-1">Accept appointments</p>
               </button>
 
               <div className="my-6 relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
+                  <div className="w-full border-t border-neutral-medium"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">OR</span>
+                  <span className="px-2 bg-gradient-to-br from-primary-50 via-white to-accent-50 text-gray-500 font-medium">OR</span>
                 </div>
               </div>
 
@@ -158,7 +158,7 @@ const Register = () => {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-blue-600 hover:text-blue-700 font-semibold"
+                  className="text-secondary-600 hover:text-secondary-700 font-bold transition-colors"
                 >
                   Login here
                 </Link>
@@ -166,47 +166,47 @@ const Register = () => {
 
               <Link
                 to="/"
-                className="w-full block text-center px-4 py-2 text-gray-600 hover:text-blue-600 font-medium"
+                className="w-full block text-center px-4 py-2 text-primary-600 hover:text-primary-700 font-medium hover:bg-primary-50 rounded-lg transition-colors"
               >
                 ← Back to Home
               </Link>
             </div>
           ) : (
             // Registration Form Screen
-            <div className="bg-white rounded-lg border border-gray-200 shadow-lg p-8">
+            <div className="card-elevated">
               <button
                 onClick={() => {
                   setSelectedRole(null);
                   setError("");
                   setFormData({ ...formData, speciality: "", experience: 0 });
                 }}
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium mb-6 flex items-center gap-1"
+                className="btn-ghost text-sm mb-6 flex items-center gap-1"
               >
                 ← Back to Role Selection
               </button>
 
               <div className="text-center mb-6">
-                <div className="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold capitalize">
+                <div className="inline-block px-4 py-2 bg-secondary-100 text-secondary-600 rounded-full text-sm font-bold capitalize">
                   {selectedRole === "doctor" ? "👨‍⚕️ Doctor" : "👨‍🦱 Patient"} Registration
                 </div>
               </div>
 
               {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-red-700 text-sm">{error}</p>
+                <div className="mb-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                  <p className="text-red-700 text-sm font-semibold">⚠️ {error}</p>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="form-group">
+                  <label className="form-label">
                     Username
                   </label>
                   <input
                     type="text"
                     name="username"
                     placeholder="Choose a username"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                    className="input-field"
                     value={formData.username}
                     onChange={handleChange}
                     required
@@ -214,15 +214,15 @@ const Register = () => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="form-group">
+                  <label className="form-label">
                     Email Address
                   </label>
                   <input
                     type="email"
                     name="email"
                     placeholder="Enter your email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                    className="input-field"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -231,15 +231,15 @@ const Register = () => {
 
                 {selectedRole === "doctor" && (
                   <>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className="form-group">
+                      <label className="form-label">
                         Speciality
                       </label>
                       <select
                         name="speciality"
                         value={formData.speciality}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                        className="input-field"
                         required
                       >
                         <option value="">Select Speciality</option>
@@ -251,8 +251,8 @@ const Register = () => {
                       </select>
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <div className="form-group">
+                      <label className="form-label">
                         Experience (Years)
                       </label>
                       <input
@@ -260,7 +260,7 @@ const Register = () => {
                         name="experience"
                         value={formData.experience}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                        className="input-field"
                         min="0"
                         max="70"
                       />
@@ -268,15 +268,15 @@ const Register = () => {
                   </>
                 )}
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="form-group">
+                  <label className="form-label">
                     Password
                   </label>
                   <input
                     type="password"
                     name="password"
                     placeholder="Choose a password"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                    className="input-field"
                     value={formData.password}
                     onChange={handleChange}
                     required
@@ -284,15 +284,15 @@ const Register = () => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="form-group">
+                  <label className="form-label">
                     Confirm Password
                   </label>
                   <input
                     type="password"
                     name="confirmPassword"
                     placeholder="Confirm your password"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                    className="input-field"
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required
@@ -302,7 +302,7 @@ const Register = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-action w-full disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {loading ? "Registering..." : "Create Account"}
                 </button>
@@ -310,10 +310,10 @@ const Register = () => {
 
               <div className="my-6 relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
+                  <div className="w-full border-t border-neutral-medium"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">OR</span>
+                  <span className="px-2 bg-white text-gray-500 font-medium">OR</span>
                 </div>
               </div>
 
@@ -321,7 +321,7 @@ const Register = () => {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-blue-600 hover:text-blue-700 font-semibold"
+                  className="text-secondary-600 hover:text-secondary-700 font-bold transition-colors"
                 >
                   Login here
                 </Link>

@@ -24,9 +24,10 @@ import DoctorProfile from "./pages/doctor/DoctorProfile.jsx";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import AddDoctor from "./pages/admin/AddDoctor";
 import AddAdmin from "./pages/admin/AddAdmin";
 import ManageDoctors from "./pages/admin/ManageDoctors";
+import ManagePatients from "./pages/admin/ManagePatients";
+import DoctorApprovals from "./pages/admin/DoctorApprovals";
 import AllBookings from "./pages/admin/AllBookings";
 
 // Components
@@ -128,10 +129,26 @@ function App() {
           }
         />
         <Route
-          path="/admin/add-doctor"
+          path="/admin/doctor-approvals"
           element={
             <ProtectedRoute user={user} role="admin">
-              <AddDoctor user={user} onLogout={handleLogout} />
+              <DoctorApprovals user={user} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/manage-doctors"
+          element={
+            <ProtectedRoute user={user} role="admin">
+              <ManageDoctors user={user} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/manage-patients"
+          element={
+            <ProtectedRoute user={user} role="admin">
+              <ManagePatients user={user} onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
@@ -148,6 +165,14 @@ function App() {
           element={
             <ProtectedRoute user={user} role="admin">
               <ManageDoctors user={user} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/all-bookings"
+          element={
+            <ProtectedRoute user={user} role="admin">
+              <AllBookings user={user} onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />

@@ -23,35 +23,39 @@ const Navbar = ({ user, onLogout }) => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <nav className="sticky top-0 z-50 bg-white border-b-2 border-neutral-medium shadow-soft">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-3">
+        <div className="flex justify-between items-center py-4">
+          {/* Brand */}
           <Link
             to={getDashboardLink()}
-            className="text-xl font-bold text-slate-700 flex items-center gap-2"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
-            <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-white text-sm font-bold">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center text-white font-bold shadow-medium">
               ⚕️
             </div>
-            MediCare
+            <span className="text-2xl font-bold text-primary-600 hidden sm:inline">
+              MediCare
+            </span>
           </Link>
 
+          {/* Right Side Actions */}
           <div className="flex items-center gap-4">
             {user ? (
               <>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary-50 border border-primary-200">
                   <div>
-                    <p className="text-sm text-gray-700 font-medium">
+                    <p className="text-sm font-semibold text-primary-600">
                       {user.username}
                     </p>
-                    <p className="text-xs text-gray-500 capitalize">
+                    <p className="text-xs text-secondary-600 capitalize font-medium">
                       {user.role}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition"
+                  className="px-4 py-2 text-sm font-medium text-primary-600 bg-neutral-light rounded-lg border border-neutral-medium transition-all hover:bg-red-50 hover:border-red-200 hover:text-red-600 active:scale-95"
                 >
                   Logout
                 </button>
@@ -60,13 +64,13 @@ const Navbar = ({ user, onLogout }) => {
               <>
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition"
+                  className="px-4 py-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                  className="btn-action text-sm"
                 >
                   Register
                 </Link>

@@ -11,130 +11,56 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-white">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-20">
+      <section className="bg-gradient-to-b from-primary-50 via-white to-accent-50 py-20 md:py-32">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-5xl font-bold text-slate-800 mb-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl flex items-center justify-center text-white mx-auto mb-6 shadow-lg-soft text-3xl">
+              ⚕️
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-primary-600 mb-4">
               MediCare Hospital System
             </h1>
-            <p className="text-lg text-gray-600 mb-8">
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
               Professional healthcare management platform for seamless appointment booking and patient care
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
               <Link
                 to="/register"
-                className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+                className="btn-action text-lg px-8 py-4 shadow-medium hover:shadow-lg-soft"
               >
-                Register as Patient
+                Get Started
               </Link>
               <Link
                 to="/login"
-                className="px-8 py-3 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition font-medium"
+                className="btn-outline text-lg px-8 py-4"
               >
-                Login to Dashboard
+                Login
               </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Login Section */}
-      <section className="bg-slate-50 py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-12">
-            Quick Access - Try Demo
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {/* Patient Demo */}
-            <div className="bg-white border-2 border-blue-200 rounded-lg p-8 text-center hover:shadow-lg transition">
-              <div className="text-5xl mb-4">👨‍🦱</div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Patient</h3>
-              <p className="text-gray-600 text-sm mb-6">
-                Book appointments with specialists and manage your health
-              </p>
-              <Link
-                to="/login"
-                onClick={(e) => {
-                  e.preventDefault();
-                  localStorage.setItem("selectedRole", "patient");
-                  window.location.href = "/login";
-                }}
-                className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold"
-              >
-                Login as Patient
-              </Link>
-              <p className="text-xs text-gray-500 mt-4">
-                Test: patient@hospital.com
-              </p>
-            </div>
-
-            {/* Doctor Demo */}
-            <div className="bg-white border-2 border-green-200 rounded-lg p-8 text-center hover:shadow-lg transition">
-              <div className="text-5xl mb-4">👨‍⚕️</div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Doctor</h3>
-              <p className="text-gray-600 text-sm mb-6">
-                Accept appointments and manage your patient schedule
-              </p>
-              <Link
-                to="/login"
-                onClick={(e) => {
-                  e.preventDefault();
-                  localStorage.setItem("selectedRole", "doctor");
-                  window.location.href = "/login";
-                }}
-                className="inline-block px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold"
-              >
-                Login as Doctor
-              </Link>
-              <p className="text-xs text-gray-500 mt-4">
-                Test: dr.sharma@hospital.com
-              </p>
-            </div>
-
-            {/* Admin Demo */}
-            <div className="bg-white border-2 border-purple-200 rounded-lg p-8 text-center hover:shadow-lg transition">
-              <div className="text-5xl mb-4">👨‍💼</div>
-              <h3 className="text-xl font-bold text-gray-800 mb-3">Admin</h3>
-              <p className="text-gray-600 text-sm mb-6">
-                Manage doctors, patients, and system configuration
-              </p>
-              <Link
-                to="/login"
-                onClick={(e) => {
-                  e.preventDefault();
-                  localStorage.setItem("selectedRole", "admin");
-                  window.location.href = "/login";
-                }}
-                className="inline-block px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold"
-              >
-                Login as Admin
-              </Link>
-              <p className="text-xs text-gray-500 mt-4">
-                Test: admin@hospital.com
-              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Specialties Section */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-12">
+          <h2 className="section-header text-center">
             Our Specialties
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {categories.map((category) => (
               <div
                 key={category.name}
-                className="bg-white border border-gray-200 rounded-lg p-6 text-center hover:shadow-lg transition"
+                className="card text-center hover:shadow-lg-soft hover:border-secondary-200 group cursor-pointer"
               >
-                <div className="text-4xl mb-3">{category.icon}</div>
-                <h3 className="font-semibold text-gray-800 text-sm">
+                <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  {category.icon}
+                </div>
+                <h3 className="font-semibold text-primary-600 text-base group-hover:text-secondary-600 transition-colors">
                   {category.name}
                 </h3>
               </div>
@@ -144,56 +70,73 @@ const Landing = () => {
       </section>
 
       {/* Features Section */}
-      <section className="bg-slate-50 py-16">
+      <section className="bg-accent-50 py-20">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 mb-8">
+              <h2 className="section-header mb-8">
                 Why Choose MediCare?
               </h2>
               <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="text-2xl">✓</div>
+                <div className="flex items-start gap-4 group">
+                  <div className="text-3xl text-secondary-600 group-hover:scale-125 transition-transform flex-shrink-0">
+                    ✓
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800">Expert Doctors</h3>
-                    <p className="text-gray-600 text-sm">
+                    <h3 className="font-semibold text-primary-600 group-hover:text-secondary-600 transition-colors">
+                      Expert Doctors
+                    </h3>
+                    <p className="text-gray-600 text-sm mt-1">
                       Access highly qualified specialists across various medical fields
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <div className="text-2xl">✓</div>
+                <div className="flex items-start gap-4 group">
+                  <div className="text-3xl text-secondary-600 group-hover:scale-125 transition-transform flex-shrink-0">
+                    ✓
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800">Easy Scheduling</h3>
-                    <p className="text-gray-600 text-sm">
+                    <h3 className="font-semibold text-primary-600 group-hover:text-secondary-600 transition-colors">
+                      Easy Scheduling
+                    </h3>
+                    <p className="text-gray-600 text-sm mt-1">
                       Book appointments at your convenience with real-time availability
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <div className="text-2xl">✓</div>
+                <div className="flex items-start gap-4 group">
+                  <div className="text-3xl text-secondary-600 group-hover:scale-125 transition-transform flex-shrink-0">
+                    ✓
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800">Secure & Private</h3>
-                    <p className="text-gray-600 text-sm">
+                    <h3 className="font-semibold text-primary-600 group-hover:text-secondary-600 transition-colors">
+                      Secure & Private
+                    </h3>
+                    <p className="text-gray-600 text-sm mt-1">
                       Your health data is protected with industry-standard security
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <div className="text-2xl">✓</div>
+                <div className="flex items-start gap-4 group">
+                  <div className="text-3xl text-secondary-600 group-hover:scale-125 transition-transform flex-shrink-0">
+                    ✓
+                  </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800">24/7 Support</h3>
-                    <p className="text-gray-600 text-sm">
+                    <h3 className="font-semibold text-primary-600 group-hover:text-secondary-600 transition-colors">
+                      24/7 Support
+                    </h3>
+                    <p className="text-gray-600 text-sm mt-1">
                       Round-the-clock customer support for all your healthcare needs
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="bg-blue-600 rounded-lg h-96 flex items-center justify-center text-center p-8">
+            <div className="bg-gradient-to-br from-secondary-600 to-secondary-700 rounded-2xl h-96 flex items-center justify-center text-center p-8 shadow-lg-soft hover:shadow-lg-soft">
               <div className="text-white">
-                <div className="text-6xl mb-4">🏥</div>
-                <p className="text-2xl font-semibold">Healthcare Excellence</p>
+                <div className="text-7xl mb-4">🏥</div>
+                <p className="text-2xl font-bold">Healthcare Excellence</p>
+                <p className="text-secondary-100 mt-2 text-sm">Dedicated to your well-being</p>
               </div>
             </div>
           </div>
@@ -201,13 +144,17 @@ const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-12">
+      <section className="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to book your appointment?</h2>
-          <p className="mb-6 text-blue-100">Join thousands of patients receiving quality care</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Ready to book your appointment?
+          </h2>
+          <p className="mb-8 text-primary-100 text-lg">
+            Join thousands of patients receiving quality care
+          </p>
           <Link
             to="/register"
-            className="px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition font-semibold inline-block"
+            className="px-8 py-4 bg-white text-primary-600 rounded-xl hover:bg-neutral-light transition font-bold inline-block shadow-medium hover:shadow-lg-soft active:scale-95"
           >
             Register Now
           </Link>
@@ -215,10 +162,12 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-800 text-white py-8">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-300">&copy; 2024 MediCare Hospital System. All rights reserved.</p>
-          <p className="text-gray-400 mt-2">Dedicated to your health and well-being</p>
+      <footer className="bg-primary-600 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-primary-100 font-medium">&copy; 2024 MediCare Hospital System. All rights reserved.</p>
+            <p className="text-primary-200 mt-2 text-sm">Dedicated to your health and well-being</p>
+          </div>
         </div>
       </footer>
     </div>

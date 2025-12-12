@@ -97,7 +97,7 @@ const DoctorBookings = ({ user, onLogout }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-light">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
@@ -105,18 +105,18 @@ const DoctorBookings = ({ user, onLogout }) => {
 
         <main className="flex-1 p-8">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-3xl font-bold text-slate-800 mb-8">
+            <h1 className="text-3xl font-bold text-primary-600 mb-8">
               Appointment Requests
             </h1>
 
             {/* Filter Buttons */}
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 mb-8">
+            <div className="card bg-white rounded-xl p-6 mb-8">
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => setFilterStatus("all")}
-                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                  className={`px-4 py-2 rounded-xl font-medium transition ${
                     filterStatus === "all"
-                      ? "bg-blue-600 text-white"
+                      ? "btn-primary"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -124,9 +124,9 @@ const DoctorBookings = ({ user, onLogout }) => {
                 </button>
                 <button
                   onClick={() => setFilterStatus("pending")}
-                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                  className={`px-4 py-2 rounded-xl font-medium transition ${
                     filterStatus === "pending"
-                      ? "bg-yellow-500 text-white"
+                      ? "badge-warning text-yellow-700"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -134,9 +134,9 @@ const DoctorBookings = ({ user, onLogout }) => {
                 </button>
                 <button
                   onClick={() => setFilterStatus("accepted")}
-                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                  className={`px-4 py-2 rounded-xl font-medium transition ${
                     filterStatus === "accepted"
-                      ? "bg-green-600 text-white"
+                      ? "badge-success text-green-700"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -145,9 +145,9 @@ const DoctorBookings = ({ user, onLogout }) => {
                 </button>
                 <button
                   onClick={() => setFilterStatus("rejected")}
-                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                  className={`px-4 py-2 rounded-xl font-medium transition ${
                     filterStatus === "rejected"
-                      ? "bg-red-600 text-white"
+                      ? "badge-error text-red-700"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -160,11 +160,11 @@ const DoctorBookings = ({ user, onLogout }) => {
             {/* Bookings List */}
             {loading ? (
               <div className="text-center py-12">
-                <div className="w-12 h-12 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+                <div className="w-12 h-12 border-4 border-primary-300 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
                 <p className="text-gray-600">Loading appointments...</p>
               </div>
             ) : filteredBookings.length === 0 ? (
-              <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-12 text-center">
+              <div className="card bg-white rounded-xl p-12 text-center">
                 <p className="text-gray-500 text-lg">No appointments found</p>
               </div>
             ) : (
@@ -172,20 +172,20 @@ const DoctorBookings = ({ user, onLogout }) => {
                 {filteredBookings.map((booking) => (
                   <div
                     key={booking._id}
-                    className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition overflow-hidden"
+                    className="card bg-white rounded-xl hover:shadow-lg transition overflow-hidden"
                   >
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-6">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-lg font-bold text-blue-600">
+                          <div className="w-12 h-12 bg-secondary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-lg font-bold text-secondary-600">
                               {booking.patientId?.username
                                 ?.charAt(0)
                                 .toUpperCase() || "P"}
                             </span>
                           </div>
                           <div>
-                            <h3 className="font-semibold text-gray-800">
+                            <h3 className="font-semibold text-primary-600">
                               {booking.patientId?.username ||
                                 "Unknown Patient"}
                             </h3>
@@ -206,7 +206,7 @@ const DoctorBookings = ({ user, onLogout }) => {
                       <div className="grid md:grid-cols-2 gap-4 mb-6">
                         <div>
                           <p className="text-gray-600 text-sm">Category</p>
-                          <p className="font-semibold text-gray-800">
+                          <p className="font-semibold text-primary-600">
                             {booking.category}
                           </p>
                         </div>
@@ -214,7 +214,7 @@ const DoctorBookings = ({ user, onLogout }) => {
                           <p className="text-gray-600 text-sm">
                             Appointment Time
                           </p>
-                          <p className="font-semibold text-gray-800">
+                          <p className="font-semibold text-primary-600">
                             {new Date(
                               booking.appointmentTime
                             ).toLocaleString()}
@@ -235,7 +235,7 @@ const DoctorBookings = ({ user, onLogout }) => {
                       </div>
 
                       {booking.message && (
-                        <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div className="mb-6 p-4 bg-neutral-light rounded-lg border border-neutral-medium">
                           <p className="text-gray-600 text-sm mb-2">
                             Patient's Message
                           </p>
@@ -251,7 +251,7 @@ const DoctorBookings = ({ user, onLogout }) => {
                               handleUpdateStatus(booking._id, "accepted")
                             }
                             disabled={updatingId === booking._id}
-                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 py-2 btn-primary rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {updatingId === booking._id ? "..." : "✓ Accept"}
                           </button>
@@ -260,7 +260,7 @@ const DoctorBookings = ({ user, onLogout }) => {
                               handleScheduleNextDay(booking._id)
                             }
                             disabled={updatingId === booking._id}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 py-2 btn-secondary rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {updatingId === booking._id
                               ? "..."
@@ -271,13 +271,13 @@ const DoctorBookings = ({ user, onLogout }) => {
                               handleUpdateStatus(booking._id, "rejected")
                             }
                             disabled={updatingId === booking._id}
-                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             {updatingId === booking._id ? "..." : "✕ Reject"}
                           </button>
                         </div>
                       ) : (
-                        <div className="text-sm text-gray-600 p-4 bg-gray-50 rounded-lg">
+                        <div className="text-sm text-gray-600 p-4 bg-neutral-light rounded-lg">
                           This appointment has already been{" "}
                           <span className="font-semibold capitalize">
                             {booking.status}

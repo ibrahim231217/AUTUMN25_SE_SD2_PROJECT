@@ -68,7 +68,7 @@ const AddAdmin = ({ user, onLogout }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-neutral-light">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
@@ -76,103 +76,100 @@ const AddAdmin = ({ user, onLogout }) => {
 
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-8">Add New Admin</h1>
+            <h1 className="text-3xl font-bold text-primary-600 mb-8">Add New Admin</h1>
 
-            <div className="card bg-white shadow-xl">
-              <div className="card-body">
-                <div className="alert alert-info mb-6">
-                  <span>
-                    ⚠️ Admin accounts have full access to the system. Use with
-                    caution.
-                  </span>
+            <div className="card bg-white rounded-xl p-6">
+              <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <span className="text-yellow-800 text-sm font-medium">
+                  ⚠️ Admin accounts have full access to the system. Use with caution.
+                </span>
+              </div>
+
+              {message.text && (
+                <div
+                  className={`mb-6 p-4 rounded-lg text-sm font-medium border ${
+                    message.type === "success"
+                      ? "bg-green-50 border-green-200 text-green-700"
+                      : "bg-red-50 border-red-200 text-red-700"
+                  }`}
+                >
+                  <span>{message.text}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit}>
+                <div className="form-group mb-6">
+                  <label className="form-label">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Enter username"
+                    className="input-field w-full"
+                    value={formData.username}
+                    onChange={handleChange}
+                    required
+                    minLength="3"
+                  />
                 </div>
 
-                {message.text && (
-                  <div
-                    className={`alert ${
-                      message.type === "success"
-                        ? "alert-success"
-                        : "alert-error"
-                    } mb-4`}
+                <div className="form-group mb-6">
+                  <label className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter email"
+                    className="input-field w-full"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group mb-6">
+                  <label className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter password"
+                    className="input-field w-full"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                    minLength="6"
+                  />
+                </div>
+
+                <div className="form-group mb-6">
+                  <label className="form-label">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm password"
+                    className="input-field w-full"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <button
+                    type="submit"
+                    className={`btn-primary rounded-xl px-8 py-3 w-full text-center transition ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                    disabled={loading}
                   >
-                    <span>{message.text}</span>
-                  </div>
-                )}
-
-                <form onSubmit={handleSubmit}>
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">Username</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="username"
-                      placeholder="Enter username"
-                      className="input input-bordered"
-                      value={formData.username}
-                      onChange={handleChange}
-                      required
-                      minLength="3"
-                    />
-                  </div>
-
-                  <div className="form-control mt-4">
-                    <label className="label">
-                      <span className="label-text">Email</span>
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Enter email"
-                      className="input input-bordered"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-control mt-4">
-                    <label className="label">
-                      <span className="label-text">Password</span>
-                    </label>
-                    <input
-                      type="password"
-                      name="password"
-                      placeholder="Enter password"
-                      className="input input-bordered"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                      minLength="6"
-                    />
-                  </div>
-
-                  <div className="form-control mt-4">
-                    <label className="label">
-                      <span className="label-text">Confirm Password</span>
-                    </label>
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      placeholder="Confirm password"
-                      className="input input-bordered"
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="form-control mt-6">
-                    <button
-                      type="submit"
-                      className={`btn btn-primary ${loading ? "loading" : ""}`}
-                      disabled={loading}
-                    >
-                      {loading ? "Adding Admin..." : "Add Admin"}
-                    </button>
-                  </div>
-                </form>
-              </div>
+                    {loading ? "Adding Admin..." : "Add Admin"}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </main>

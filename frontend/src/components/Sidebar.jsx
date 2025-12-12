@@ -17,10 +17,11 @@ const Sidebar = ({ role }) => {
 
   const adminLinks = [
     { path: "/admin/dashboard", label: "Dashboard", icon: "🏠" },
-    { path: "/admin/add-doctor", label: "Add Doctor", icon: "➕" },
+    { path: "/admin/doctor-approvals", label: "Approve Doctors", icon: "✅" },
+    { path: "/admin/manage-doctors", label: "Manage Doctors", icon: "👨‍⚕️" },
+    { path: "/admin/manage-patients", label: "Manage Patients", icon: "👨‍🦱" },
+    { path: "/admin/all-bookings", label: "All Bookings", icon: "📋" },
     { path: "/admin/add-admin", label: "Add Admin", icon: "🔐" },
-    { path: "/admin/doctors", label: "Manage Doctors", icon: "👨‍⚕️" },
-    { path: "/admin/bookings", label: "All Bookings", icon: "📋" },
   ];
 
   let links = [];
@@ -29,20 +30,26 @@ const Sidebar = ({ role }) => {
   if (role === "admin") links = adminLinks;
 
   return (
-    <aside className="w-64 bg-base-200 min-h-screen p-4">
-      <ul className="menu">
-        {links.map((link) => (
-          <li key={link.path}>
+    <aside className="w-64 bg-white border-r-2 border-neutral-medium min-h-screen p-4 sticky top-16 overflow-y-auto shadow-soft">
+      <nav className="space-y-2">
+        {links.map((link) => {
+          const isActive = location.pathname === link.path;
+          return (
             <Link
+              key={link.path}
               to={link.path}
-              className={location.pathname === link.path ? "active" : ""}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                isActive
+                  ? "bg-primary-100 text-primary-600 border-l-4 border-primary-600"
+                  : "text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+              }`}
             >
               <span className="text-xl">{link.icon}</span>
-              {link.label}
+              <span className="text-sm">{link.label}</span>
             </Link>
-          </li>
-        ))}
-      </ul>
+          );
+        })}
+      </nav>
     </aside>
   );
 };
