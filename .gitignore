@@ -1,4 +1,4 @@
-# Dependencies
+﻿# Dependencies
 node_modules
 
 # Frontend folder (excluded from repo)
@@ -23,4 +23,3 @@ Thumbs.db
 # Build outputs
 dist/
 build/
-backend/
