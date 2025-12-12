@@ -35,15 +35,15 @@ const MyBookings = ({ user, onLogout }) => {
 
   const getStatusColor = (status) => {
     const colors = {
-      pending: "bg-yellow-100 text-yellow-700",
-      accepted: "bg-green-100 text-green-700",
-      rejected: "bg-red-100 text-red-700",
+      pending: "badge-warning",
+      accepted: "badge-success",
+      rejected: "badge-error",
     };
-    return colors[status] || "bg-gray-100 text-gray-700";
+    return colors[status] || "badge-primary";
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="page-container">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
@@ -51,10 +51,11 @@ const MyBookings = ({ user, onLogout }) => {
 
         <main className="flex-1 p-8">
           <div className="max-w-6xl mx-auto">
-            <h1 className="text-3xl font-bold text-slate-800 mb-8">My Appointments</h1>
+            <h1 className="section-header mb-2">My Appointments</h1>
+            <p className="section-subtitle mb-8">Manage all your medical appointments</p>
 
             {/* Filter Buttons */}
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 mb-8">
+            <div className="card mb-8">
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => setFilterStatus("all")}

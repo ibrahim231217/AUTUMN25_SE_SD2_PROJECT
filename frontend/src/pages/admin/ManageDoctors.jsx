@@ -45,7 +45,7 @@ const ManageDoctors = ({ user, onLogout }) => {
   );
 
   return (
-    <div className="min-h-screen bg-neutral-light">
+    <div className="page-container">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
@@ -53,10 +53,10 @@ const ManageDoctors = ({ user, onLogout }) => {
 
         <main className="flex-1 p-8">
           <div className="max-w-6xl mx-auto">
-            <h1 className="text-3xl font-bold text-primary-600 mb-2">
+            <h1 className="section-header mb-2">
               Manage Doctors
             </h1>
-            <p className="text-gray-600 mb-8">
+            <p className="section-subtitle mb-8">
               View, update, and manage all registered doctors
             </p>
 
@@ -76,7 +76,7 @@ const ManageDoctors = ({ user, onLogout }) => {
                 <p className="text-gray-600">Loading doctors...</p>
               </div>
             ) : filteredDoctors.length === 0 ? (
-              <div className="card bg-white rounded-xl border-2 border-neutral-medium p-12 text-center">
+              <div className="card text-center p-12">
                 <div className="text-5xl mb-4">👨‍⚕️</div>
                 <h3 className="text-2xl font-bold text-primary-600 mb-2">
                   No Doctors Found
@@ -92,11 +92,11 @@ const ManageDoctors = ({ user, onLogout }) => {
                 {filteredDoctors.map((doctor) => (
                   <div
                     key={doctor._id}
-                    className="card bg-white rounded-xl border border-neutral-medium p-6 hover:shadow-lg transition"
+                    className="card group"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-4">
-                        <div className="text-5xl">👨‍⚕️</div>
+                        <div className="text-5xl group-hover:scale-110 transition-transform">👨‍⚕️</div>
                         <div>
                           <h3 className="text-2xl font-bold text-primary-600">
                             {doctor.username}
@@ -157,7 +157,7 @@ const ManageDoctors = ({ user, onLogout }) => {
 
                     <div className="flex gap-4">
                       <button
-                        className="px-4 py-2 btn-primary rounded-xl hover:shadow-medium transition font-semibold text-sm"
+                        className="px-4 py-2 btn-primary rounded-xl text-sm font-semibold"
                       >
                         Edit Profile
                       </button>

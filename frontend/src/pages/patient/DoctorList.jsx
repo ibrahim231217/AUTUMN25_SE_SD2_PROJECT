@@ -45,18 +45,18 @@ const DoctorList = ({ user, onLogout }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="page-container">
       <Navbar user={user} onLogout={onLogout} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-12">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-800">Find Doctors</h1>
-          <p className="text-gray-600 mt-2">Browse our team of qualified specialists</p>
+        <div className="mb-10">
+          <h1 className="section-header">Find Doctors</h1>
+          <p className="section-subtitle">Browse our team of qualified specialists</p>
         </div>
 
         {/* Filter */}
-        <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 mb-8">
+        <div className="card mb-10">
           <h2 className="font-semibold text-gray-800 mb-4">Filter by Specialty</h2>
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
@@ -65,8 +65,8 @@ const DoctorList = ({ user, onLogout }) => {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-lg transition ${
                   selectedCategory === category
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "btn-primary"
+                    : "btn-outline"
                 }`}
               >
                 {category}
@@ -78,30 +78,30 @@ const DoctorList = ({ user, onLogout }) => {
         {/* Doctors Grid */}
         {loading ? (
           <div className="text-center py-12">
-            <p className="text-gray-600">Loading doctors...</p>
+            <p className="text-gray-600 text-lg">Loading doctors...</p>
           </div>
         ) : filteredDoctors.length === 0 ? (
-          <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-8 text-center">
+          <div className="card text-center p-8">
             <p className="text-gray-600">No doctors found in this specialty</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid-responsive">
             {filteredDoctors.map((doctor) => (
               <div
                 key={doctor._id}
-                className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition overflow-hidden"
+                className="card group"
               >
-                <div className="p-6">
+                <div className="p-2">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="font-semibold text-gray-800 text-lg">
+                      <h3 className="font-bold text-lg text-gray-800">
                         Dr. {doctor.username}
                       </h3>
-                      <p className="text-sm text-blue-600 font-medium">
+                      <p className="text-sm font-medium" style={{color: 'var(--secondary)'}}>
                         {doctor.speciality}
                       </p>
                     </div>
-                    <div className="text-3xl opacity-20">👨‍⚕️</div>
+                    <div className="text-4xl group-hover:scale-110 transition-transform">👨‍⚕️</div>
                   </div>
 
                   {doctor.experience > 0 && (
@@ -122,7 +122,7 @@ const DoctorList = ({ user, onLogout }) => {
 
                   <Link
                     to={`/patient/book/${doctor._id}`}
-                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center font-medium text-sm"
+                    className="w-full btn-action block text-center text-sm py-2"
                   >
                     Book Appointment
                   </Link>

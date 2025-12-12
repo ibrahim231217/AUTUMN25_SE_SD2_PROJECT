@@ -97,7 +97,7 @@ const AdminDashboard = ({ user, onLogout }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-light">
+    <div className="page-container">
       <Navbar user={user} onLogout={onLogout} />
 
       <div className="flex">
@@ -106,11 +106,11 @@ const AdminDashboard = ({ user, onLogout }) => {
         <main className="flex-1 p-8">
           <div className="max-w-7xl mx-auto">
             {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-4xl font-bold text-primary-600 mb-2">
+            <div className="mb-10">
+              <h1 className="section-header mb-2">
                 Admin Dashboard
               </h1>
-              <p className="text-gray-600">
+              <p className="section-subtitle">
                 Manage doctors, patients, and system operations
               </p>
             </div>
@@ -126,7 +126,7 @@ const AdminDashboard = ({ user, onLogout }) => {
                   {statCards.map((stat, idx) => (
                     <Link key={idx} to={stat.link}>
                       <div
-                        className={`card rounded-xl p-6 hover:shadow-lg transition cursor-pointer border-2 ${stat.color} ${
+                        className={`card-elevated rounded-xl p-6 cursor-pointer ${
                           stat.highlight ? "ring-2 ring-action-500" : ""
                         }`}
                       >
@@ -159,39 +159,39 @@ const AdminDashboard = ({ user, onLogout }) => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <Link
                       to="/admin/manage-doctors"
-                      className="card p-4 border-2 border-secondary-200 rounded-xl hover:bg-secondary-50 transition text-center group"
+                      className="card group rounded-xl text-center"
                     >
-                      <div className="text-3xl mb-2 group-hover:scale-110 transition">👨‍⚕️</div>
-                      <h3 className="font-semibold text-primary-600">
+                      <div className="text-4xl mb-3 group-hover:scale-125 transition-transform">👨‍⚕️</div>
+                      <h3 className="font-semibold text-primary-600 mb-1">
                         Manage Doctors
                       </h3>
-                      <p className="text-xs text-gray-600 mt-1">
+                      <p className="text-xs text-gray-600">
                         View and manage doctors
                       </p>
                     </Link>
 
                     <Link
                       to="/admin/doctor-approvals"
-                      className="card p-4 border-2 border-yellow-200 rounded-xl hover:bg-yellow-50 transition text-center group"
+                      className="card group rounded-xl text-center"
                     >
-                      <div className="text-3xl mb-2 group-hover:scale-110 transition">✅</div>
-                      <h3 className="font-semibold text-primary-600">
+                      <div className="text-4xl mb-3 group-hover:scale-125 transition-transform">✅</div>
+                      <h3 className="font-semibold text-primary-600 mb-1">
                         Approve Doctors
                       </h3>
-                      <p className="text-xs text-gray-600 mt-1">
+                      <p className="text-xs text-gray-600">
                         Review pending applications
                       </p>
                     </Link>
 
                     <Link
                       to="/admin/manage-patients"
-                      className="card p-4 border-2 border-primary-200 rounded-xl hover:bg-primary-50 transition text-center group"
+                      className="card group rounded-xl text-center"
                     >
-                      <div className="text-3xl mb-2 group-hover:scale-110 transition">👨‍🦱</div>
-                      <h3 className="font-semibold text-primary-600">
+                      <div className="text-4xl mb-3 group-hover:scale-125 transition-transform">👨‍🦱</div>
+                      <h3 className="font-semibold text-primary-600 mb-1">
                         Manage Patients
                       </h3>
-                      <p className="text-xs text-gray-600 mt-1">
+                      <p className="text-xs text-gray-600">
                         View patient list
                       </p>
                     </Link>
