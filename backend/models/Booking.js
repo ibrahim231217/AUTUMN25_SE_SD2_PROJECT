@@ -37,6 +37,15 @@ const bookingSchema = new mongoose.Schema(
       enum: ["pending", "accepted", "rejected", "cancelled"],
       default: "pending",
     },
+    prescription: {
+      type: String, // Stores file path/URL
+      default: "",
+    },
+    consultationNotes: {
+      type: String,
+      default: "",
+      maxlength: [1000, "Notes cannot exceed 1000 characters"],
+    },
   },
   {
     timestamps: true,

@@ -48,7 +48,7 @@ const getBookings = async (req, res) => {
     }
 
     const bookings = await Booking.find(filter)
-      .populate("patientId", "username email")
+      .populate("patientId", "username email patientId")
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -73,7 +73,7 @@ const getPendingAppointments = async (req, res) => {
       doctorId: req.user._id,
       status: "pending",
     })
-      .populate("patientId", "username email")
+      .populate("patientId", "username email patientId")
       .sort({ appointmentTime: 1 });
 
     res.status(200).json({
@@ -241,6 +241,138 @@ const scheduleNextDay = async (req, res) => {
   }
 };
 
+// ===== CONSULTANCY FEATURES =====
+
+// @desc    Search for a patient by Patient ID
+// @route   GET /api/doctor/search-patient?patientId=P-0001
+// @access  Private (Doctor)
+const searchPatient = async (req, res) => {
+  try {
+    const { patientId } = req.query;
+
+    if (!patientId) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a patient ID",
+      });
+    }
+
+    const patient = await User.findOne({
+      patientId: patientId.toUpperCase(), // Case insensitive search
+      role: "patient"
+    }).select("-password");
+
+    if (!patient) {
+      return res.status(404).json({
+        success: false,
+        message: "Patient not found with this ID",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: patient,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Get patient's full appointment history
+// @route   GET /api/doctor/patient-history/:patientId
+// @access  Private (Doctor)
+const getPatientHistory = async (req, res) => {
+  try {
+    const { patientId } = req.params;
+
+    // Find patient first
+    const patient = await User.findOne({
+      patientId: patientId.toUpperCase(),
+      role: "patient"
+    }).select("-password");
+
+    if (!patient) {
+      return res.status(404).json({
+        success: false,
+        message: "Patient not found",
+      });
+    }
+
+    // Get all bookings for this patient with ALL doctors (full medical history)
+    const bookings = await Booking.find({
+      patientId: patient._id,
+      // Removed doctorId filter to show ALL appointments
+    })
+      .populate("doctorId", "username speciality doctorId")
+      .sort({ appointmentTime: -1 }); // Newest first
+
+    res.status(200).json({
+      success: true,
+      patient: patient,
+      appointmentCount: bookings.length,
+      appointments: bookings,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Upload prescription for a booking
+// @route   PATCH /api/doctor/upload-prescription/:bookingId
+// @access  Private (Doctor)
+const uploadPrescription = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const { prescription, consultationNotes } = req.body; // Added notes
+
+    if (!prescription && !consultationNotes) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide prescription file or consultation notes",
+      });
+    }
+
+    // Find booking
+    const booking = await Booking.findOne({
+      _id: bookingId,
+      doctorId: req.user._id,
+    });
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found or you do not have permission",
+      });
+    }
+
+    // Update prescription and notes
+    if (prescription) booking.prescription = prescription;
+    if (consultationNotes !== undefined) booking.consultationNotes = consultationNotes;
+    await booking.save();
+
+    const updatedBooking = await Booking.findById(booking._id)
+      .populate("patientId", "username email patientId")
+      .populate("doctorId", "username speciality doctorId");
+
+    res.status(200).json({
+      success: true,
+      message: "Prescription uploaded successfully",
+      data: updatedBooking,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProfile,
   getBookings,
@@ -248,4 +380,7 @@ module.exports = {
   updateBookingStatus,
   scheduleNextDay,
   updateProfile,
+  searchPatient,
+  getPatientHistory,
+  uploadPrescription,
 };

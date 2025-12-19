@@ -6,6 +6,9 @@ const {
   updateBookingStatus,
   scheduleNextDay,
   updateProfile,
+  searchPatient,
+  getPatientHistory,
+  uploadPrescription,
 } = require("../controllers/doctorController");
 const { authMiddleware, isDoctor } = require("../middleware/authMiddleware");
 
@@ -31,5 +34,15 @@ router.patch("/schedule-next-day/:id", scheduleNextDay);
 
 // @route   PATCH /api/doctor/update-profile
 router.patch("/update-profile", updateProfile);
+
+// Consultancy routes
+// @route   GET /api/doctor/search-patient?patientId=P-0001
+router.get("/search-patient", searchPatient);
+
+// @route   GET /api/doctor/patient-history/:patientId
+router.get("/patient-history/:patientId", getPatientHistory);
+
+// @route   PATCH /api/doctor/upload-prescription/:bookingId
+router.patch("/upload-prescription/:bookingId", uploadPrescription);
 
 module.exports = router;

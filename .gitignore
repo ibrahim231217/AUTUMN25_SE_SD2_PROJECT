@@ -2,7 +2,7 @@
 node_modules
 
 # Frontend folder (excluded from repo)
-frontend/
+
 
 # Environment variables
 .env

@@ -28,6 +28,17 @@ const userSchema = new mongoose.Schema(
       enum: ["patient", "doctor", "admin"],
       default: "patient",
     },
+    // Unique IDs for patients and doctors
+    patientId: {
+      type: String,
+      unique: true,
+      sparse: true, // Only patients will have this
+    },
+    doctorId: {
+      type: String,
+      unique: true,
+      sparse: true, // Only doctors will have this
+    },
     // Doctor-specific fields
     speciality: {
       type: String,
@@ -55,7 +66,7 @@ const userSchema = new mongoose.Schema(
     },
     isApproved: {
       type: Boolean,
-      default: function() {
+      default: function () {
         // Admins and patients are always approved
         // Only doctors need approval
         return this.role !== "doctor";
@@ -68,8 +79,24 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Hash password before saving
+// Auto-generate unique IDs before saving
 userSchema.pre("save", async function (next) {
+  // Generate ID for new users only
+  if (this.isNew) {
+    try {
+      if (this.role === "patient" && !this.patientId) {
+        const count = await this.constructor.countDocuments({ role: "patient" });
+        this.patientId = String(count + 1).padStart(4, '0'); // Just numbers: 0001
+      } else if (this.role === "doctor" && !this.doctorId) {
+        const count = await this.constructor.countDocuments({ role: "doctor" });
+        this.doctorId = String(count + 1).padStart(4, '0'); // Just numbers: 0001
+      }
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  // Hash password if modified
   if (!this.isModified("password")) return next();
 
   try {
